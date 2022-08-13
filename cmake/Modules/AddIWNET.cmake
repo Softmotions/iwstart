@@ -63,7 +63,8 @@ set_target_properties(
   IOWOW::static
   PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
              IMPORTED_LOCATION
-             "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiowow-1.a")
+             "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiowow-1.a"
+             IMPORTED_LINK_INTERFACE_LIBRARIES "Threads::Threads;m")
 
 add_library(IWNET::static STATIC IMPORTED GLOBAL)
 set_target_properties(
@@ -71,7 +72,7 @@ set_target_properties(
   PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
              IMPORTED_LOCATION
              "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiwnet-1.a"
-             INTERFACE_LINK_LIBRARIES IOWOW::static)
+             IMPORTED_LINK_INTERFACE_LIBRARIES "IOWOW::static")
 
 add_dependencies(IOWOW::static extern_iwnet)
 add_dependencies(IWNET::static extern_iwnet)
