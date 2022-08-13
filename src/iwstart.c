@@ -6,7 +6,6 @@
 #include <stdio.h>
 
 #ifdef IW_EXEC
-
 int main(int argc, const char *argv[]) {
   iwrc rc = 0;
   RCC(rc, finish, iw_init());

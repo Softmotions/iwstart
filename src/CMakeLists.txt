@@ -50,6 +50,8 @@ add_executable(iwstart ${ALL_SRC})
 target_link_libraries(iwstart ${LINK_LIBS})
 set_target_properties(iwstart PROPERTIES COMPILE_FLAGS "-DIW_EXEC")
 
+add_dependencies(iwstart generated)
+
 if(BUILD_TESTS)
   add_library(iwstart_s ${ALL_SRC})
   target_link_libraries(iwstart_s PUBLIC ${LINK_LIBS})
