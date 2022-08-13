@@ -31,18 +31,20 @@ set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-Wl,-s")
 set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELEASE} -g")
 set(CMAKE_C_FLAGS_RELEASEWITHDEBINFO ${CMAKE_C_FLAGS_RELWITHDEBINFO})
 
-
 find_package(Threads REQUIRED CMAKE_THREAD_PREFER_PTHREAD)
 
-include(AddIWNET)
+include(AddIOWOW)
+#include(AddIWNET)
+#include(AddEJDB2)
 
-add_definitions(-D_LARGEFILE64_SOURCE)
+set(LINK_LIBS IOWOW::static)
+#set(LINK_LIBS IWNET::static)
+#set(LINK_LIBS EJDB2::static)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/include)
+add_definitions(-D_LARGEFILE64_SOURCE)
 
 file(GLOB ALL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
-
-set(LINK_LIBS IWNET::static)
 
 add_executable(iwstart ${ALL_SRC})
 target_link_libraries(iwstart ${LINK_LIBS})
