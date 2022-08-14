@@ -21,6 +21,7 @@ struct env {
   const char *project_base_lib;
   const char *project_description;
   const char *project_license;
+  const char *project_directory;
   uint32_t    project_flags;
 
   int  argc;

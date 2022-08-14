@@ -28,7 +28,7 @@ static void _usage(const char *err) {
     fprintf(stderr, "\n%s\n\n", err);
   }
   fprintf(stderr, "\n\tIOWOW/IWNET/EJDB2 Project boilerplate generator\n");
-  fprintf(stderr, "\nUsage %s [options]\n\n", g_env.program);
+  fprintf(stderr, "\nUsage %s [options] <project directory>\n\n", g_env.program);
   fprintf(stderr, "\tNote: Options marked as * are required.\n\n");
   fprintf(stderr, "\t* -a, --artifact=<>\tProject main artifact name (required).\n");
   fprintf(stderr, "\t* -n, --name=<>\t\tShort project name.\n");
@@ -52,7 +52,7 @@ static bool _project_artifact_set(const char *val) {
   }
   for (size_t i = 0; i < len; ++i) {
     char c = val[i];
-    if (i == 0 && (c >= '0' || c <= '9')) {
+    if (i == 0 && (c >= '0' && c <= '9')) {
       goto fail;
     }
     if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')) {
@@ -237,6 +237,14 @@ static int _main(int argc, char *argv[]) {
         _usage(0);
         rv = EXIT_FAILURE;
         goto finish;
+    }
+  }
+
+  if (!g_env.project_directory) {
+    if (argc > 1 && argv[argc - 1] && *argv[argc - 1] != '-') {
+      g_env.project_directory = g_env.argv[g_env.argc - 1];
+    } else {
+      g_env.project_directory = g_env.cwd;
     }
   }
 
