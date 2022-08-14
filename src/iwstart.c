@@ -241,7 +241,7 @@ static int _main(int argc, char *argv[]) {
   }
 
   if (!g_env.project_directory) {
-    if (argc > 1 && argv[argc - 1] && *argv[argc - 1] != '-') {
+    if (g_env.argc > 1 && g_env.argv[g_env.argc - 1] && *g_env.argv[g_env.argc - 1] != '-') {
       g_env.project_directory = g_env.argv[g_env.argc - 1];
     } else {
       g_env.project_directory = g_env.cwd;
