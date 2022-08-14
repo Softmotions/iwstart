@@ -25,17 +25,66 @@ static void _destroy(void) {
 
 static void _usage(const char *err) {
   if (err) {
-    fprintf(stderr, "\nError:\n\n");
-    fprintf(stderr, "\t%s\n\n", err);
+    fprintf(stderr, "\n%s\n\n", err);
   }
   fprintf(stderr, "\n\tIOWOW/IWNET/EJDB2 Project boilerplate generator\n");
-  fprintf(stderr, "\nUsage %s [options]\n", g_env.program);
-  fprintf(stderr, "\t-c, --conf=<>\t\t.ini configuration file\n");
-  fprintf(stderr, "\t-V, --verbose\t\tPrint verbose output\n");
-  fprintf(stderr, "\t-v, --version\t\tShow program version\n");
-  fprintf(stderr, "\t-h, --help\t\tPrint usage help\n");
+  fprintf(stderr, "\nUsage %s [options]\n\n", g_env.program);
+  fprintf(stderr, "\tNote: Options marked as * are required.\n\n");
+  fprintf(stderr, "\t* -a, --artifact=<>\tProject main artifact name (required).\n");
+  fprintf(stderr, "\t* -n, --name=<>\t\tShort project name.\n");
+  fprintf(stderr, "\t  -b, --base=<>\t\tProject base lib. Either of: iowow,iwnet,ejdb2. Default: iwnet\n");
+  fprintf(stderr, "\t  -d, --description=<>\tProject description text.\n");
+  fprintf(stderr, "\t  -l, --license=<>\tProject license name.\n");
+  fprintf(stderr, "\t  -c, --conf=<>\t\t.ini configuration file.\n");
+  fprintf(stderr, "\t  -V, --verbose\t\tPrint verbose output.\n");
+  fprintf(stderr, "\t  -v, --version\t\tShow program version.\n");
+  fprintf(stderr, "\t  -h, --help\t\tPrint usage help.\n");
   fprintf(stderr, "\n");
 };
+
+static bool _project_artifact_set(const char *val) {
+  if (!val) {
+    goto fail;
+  }
+  size_t len = strlen(val);
+  if (!len) {
+    goto fail;
+  }
+  for (size_t i = 0; i < len; ++i) {
+    char c = val[i];
+    if (i == 0 && (c >= '0' || c <= '9')) {
+      goto fail;
+    }
+    if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')) {
+      goto fail;
+    }
+  }
+  g_env.project_artifact = iwpool_strdup2(g_env.pool, val);
+  return g_env.project_artifact != 0;
+
+fail:
+  fprintf(stderr, "Invalid project artifact value. (-a, --artifact=<>)\n");
+  return false;
+}
+
+static bool _project_base_lib_set(const char *val) {
+  if (!val) {
+    goto fail;
+  }
+  if (!strcmp(val, "iowow")) {
+    g_env.project_flags |= PROJECT_FLG_IOWOW;
+  } else if (!strcmp(val, "iwnet")) {
+    g_env.project_flags |= PROJECT_FLG_IWNET;
+  } else if (!strcmp(val, "ejdb2")) {
+    g_env.project_flags |= PROJECT_FLG_EJDB2;
+  }
+  g_env.project_base_lib = iwpool_strdup2(g_env.pool, val);
+  return g_env.project_base_lib != 0;
+
+fail:
+  fprintf(stderr, "Project base lib value must be one of: iowow,iwnet,ejdb. (-b, --base=<>)\n");
+  return false;
+}
 
 static void _on_signal(int signo) {
   if (g_env.verbose) {
@@ -93,7 +142,7 @@ finish:
   return rc;
 }
 
-static iwrc _run(void);
+iwrc run(void);
 
 static int _main(int argc, char *argv[]) {
   int rv = EXIT_SUCCESS;
@@ -137,14 +186,20 @@ static int _main(int argc, char *argv[]) {
   }
 
   static const struct option long_options[] = {
-    { "help",    0, 0, 'h' },
-    { "verbose", 0, 0, 'V' },
-    { "version", 0, 0, 'v' },
-    { "conf",    1, 0, 'c' }
+    { "help",        0, 0, 'h' },
+    { "verbose",     0, 0, 'V' },
+    { "version",     0, 0, 'v' },
+    { "conf",        1, 0, 'c' },
+    //
+    { "artifact",    1, 0, 'a' },
+    { "name",        1, 0, 'n' },
+    { "base",        1, 0, 'b' },
+    { "description", 1, 0, 'd' },
+    { "license",     1, 0, 'l' }
   };
 
   int ch;
-  while ((ch = getopt_long(argc, argv, "c:hvV", long_options, 0)) != -1) {
+  while ((ch = getopt_long(argc, argv, "b:a:n:d:l:c:hvV", long_options, 0)) != -1) {
     switch (ch) {
       case 'h':
         _usage(0);
@@ -156,7 +211,27 @@ static int _main(int argc, char *argv[]) {
         g_env.verbose = true;
         break;
       case 'c':
-        g_env.config_file = iwpool_strdup2(g_env.pool, optarg);
+        RCB(finish, g_env.config_file = iwpool_strdup2(g_env.pool, optarg));
+        break;
+      case 'a':
+        if (!_project_artifact_set(optarg)) {
+          rv = EXIT_FAILURE;
+          goto finish;
+        }
+        break;
+      case 'n':
+        RCB(finish, g_env.project_name = iwpool_strdup2(g_env.pool, optarg));
+        break;
+      case 'b':
+        if (!_project_base_lib_set(optarg)) {
+          rv = EXIT_FAILURE;
+        }
+        break;
+      case 'd':
+        RCB(finish, g_env.project_description = iwpool_strdup2(g_env.pool, optarg));
+        break;
+      case 'l':
+        RCB(finish, g_env.project_license = iwpool_strdup2(g_env.pool, optarg));
         break;
       default:
         _usage(0);
@@ -169,20 +244,33 @@ static int _main(int argc, char *argv[]) {
     RCC(rc, finish, _config_load());
   }
 
-  rc = _run();
+  if (!g_env.project_artifact) {
+    _usage("Missing required option: -a, --artifact=<>");
+    rv = EXIT_FAILURE;
+    goto finish;
+  }
+  if (!g_env.project_name) {
+    _usage("Missing required option: -n, --name=<>");
+    rv = EXIT_FAILURE;
+    goto finish;
+  }
+  if (!g_env.project_base_lib && !_project_base_lib_set("iwnet")) {
+    rv = EXIT_FAILURE;
+    goto finish;
+  }
+  if (!g_env.project_license) {
+    g_env.project_license = "Proprietary";
+  }
+
+  rc = run();
 
 finish:
   _destroy();
   if (rc) {
+    iwlog_ecode_error3(rc);
     return EXIT_FAILURE;
   }
   return rv;
-}
-
-static iwrc _run(void) {
-  iwrc rc = 0;
-  fprintf(stderr, "Hello\n");
-  return rc;
 }
 
 #ifdef IW_EXEC
