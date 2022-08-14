@@ -8,6 +8,7 @@
 #include <iowow/iwini.h>
 
 #include <errno.h>
+#include <ftw.h>
 #include <getopt.h>
 #include <limits.h>
 #include <signal.h>
@@ -142,6 +143,38 @@ finish:
   return rc;
 }
 
+static int _nfw_dir_yes(const char *fpath, const struct stat *sb, int tf, struct FTW *ftwbuf) {
+  return (tf & FTW_D) == 0;
+}
+
+static bool _do_checks_dirs(void) {
+  struct stat st;
+  int rv = stat(g_env.project_directory, &st);
+  if (rv == -1) {
+    if (errno == ENOENT) {
+      return true;
+    } else {
+      iwlog_ecode_error3(iwrc_set_errno(IW_ERROR_IO_ERRNO, errno));
+      return false;
+    }
+  }
+  if (!S_ISDIR(st.st_mode)) {
+    fprintf(stderr, "%s is not a directory\n", g_env.project_directory);
+    return false;
+  }
+
+  rv = nftw(g_env.project_directory, _nfw_dir_yes, 10, FTW_DEPTH | FTW_MOUNT | FTW_PHYS);
+  if (rv == -1) {
+    iwlog_ecode_error3(iwrc_set_errno(IW_ERROR_IO_ERRNO, errno));
+    return false;
+  }
+  if (rv) {
+    fprintf(stderr, "Directory %s is not empty, aborting.\n", g_env.project_directory);
+    return false;
+  }
+  return true;
+}
+
 iwrc run(void);
 
 static int _main(int argc, char *argv[]) {
@@ -241,8 +274,8 @@ static int _main(int argc, char *argv[]) {
   }
 
   if (!g_env.project_directory) {
-    if (g_env.argc > 1 && g_env.argv[g_env.argc - 1] && *g_env.argv[g_env.argc - 1] != '-') {
-      g_env.project_directory = g_env.argv[g_env.argc - 1];
+    if (argv[optind]) {
+      RCB(finish, g_env.project_directory = iwpool_strdup2(g_env.pool, argv[optind]));
     } else {
       g_env.project_directory = g_env.cwd;
     }
@@ -268,6 +301,11 @@ static int _main(int argc, char *argv[]) {
   }
   if (!g_env.project_license) {
     g_env.project_license = "Proprietary";
+  }
+
+  if (!_do_checks_dirs()) {
+    rv = EXIT_FAILURE;
+    goto finish;
   }
 
   rc = run();

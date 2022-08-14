@@ -37,7 +37,7 @@ include({project_base_lib_cmake})
 set(LINK_LIBS {project_base_lib})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/include)
-add_definitions(-D_LARGEFILE64_SOURCE)
+add_definitions(-D_LARGEFILE_SOURCE)
 
 file(GLOB ALL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 

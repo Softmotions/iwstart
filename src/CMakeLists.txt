@@ -40,7 +40,18 @@ set(LINK_LIBS IOWOW::static)
 # set(LINK_LIBS IWNET::static) set(LINK_LIBS EJDB2::static)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/include)
-add_definitions(-D_LARGEFILE64_SOURCE)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  # Needed by Linux in order to use nftw() but fail to build on FreeBSD due to
+  # __BSD_VISIBLE define state.
+  add_definitions(-D_XOPEN_SOURCE=700)
+endif()
+add_definitions(-D_DEFAULT_SOURCE)
+add_definitions(-D_LARGEFILE_SOURCE)
+add_definitions(-D_FILE_OFFSET_BITS=64)
+if(APPLE)
+  add_definitions(-D_DARWIN_C_SOURCE)
+endif(APPLE)
 
 file(GLOB ALL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 
