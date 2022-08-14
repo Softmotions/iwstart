@@ -15,7 +15,11 @@
 
 struct env g_env = { 0 };
 
-IW_NORET static void _usage(const char *err) {
+static void _destroy(void) {
+  iwpool_destroy(g_env.pool);
+}
+
+static void _usage(const char *err) {
   if (err) {
     fprintf(stderr, "\nError:\n\n");
     fprintf(stderr, "\t%s\n\n", err);
@@ -27,7 +31,6 @@ IW_NORET static void _usage(const char *err) {
   fprintf(stderr, "\t-v, --version\t\tShow program version\n");
   fprintf(stderr, "\t-h, --help\t\tPrint usage help\n");
   fprintf(stderr, "\n");
-  exit(err ? 1 : 0);
 };
 
 static void _on_signal(int signo) {
@@ -38,11 +41,8 @@ static void _on_signal(int signo) {
   exit(0);
 }
 
-static void _destroy(void) {
-  iwpool_destroy(g_env.pool);
-}
-
 static int _main(int argc, char *argv[]) {
+  int rv = EXIT_SUCCESS;
   iwrc rc = 0;
   umask(0077);
   signal(SIGPIPE, SIG_IGN);
@@ -82,23 +82,29 @@ static int _main(int argc, char *argv[]) {
     switch (ch) {
       case 'h':
         _usage(0);
-        break;
+        goto finish;
       case 'v':
-        // TODO: print version
-        break;
+        fprintf(stdout, "%s\n", VERSION_FULL);
+        goto finish;
       case 'V':
         g_env.verbose = true;
         break;
+      case 'c':
+        g_env.config_file = iwpool_strdup2(g_env.pool, optarg);
+        break;
+      default:
+        _usage(0);
+        rv = EXIT_FAILURE;
+        goto finish;
     }
   }
 
-
-  finish:
+finish:
   _destroy();
   if (rc) {
     return EXIT_FAILURE;
   }
-  return EXIT_SUCCESS;
+  return rv;
 }
 
 #ifdef IW_EXEC
