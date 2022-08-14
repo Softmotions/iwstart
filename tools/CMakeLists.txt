@@ -148,4 +148,26 @@ add_custom_command(
     ${CMAKE_SOURCE_DIR}/templates/README.md >
     "${CMAKE_BINARY_DIR}/include/readme_md.inc")
 
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/test1.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/test1.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "test1"
+    ${CMAKE_SOURCE_DIR}/templates/test1.c >
+    "${CMAKE_BINARY_DIR}/include/test1.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/tests_cmake_lists.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/tests_cmake_lists.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "tests_cmake_lists"
+    ${CMAKE_SOURCE_DIR}/templates/TestsCMakeLists.cmake >
+    "${CMAKE_BINARY_DIR}/include/tests_cmake_lists.inc")
+
 add_custom_target(generated DEPENDS ${_TARGETS})

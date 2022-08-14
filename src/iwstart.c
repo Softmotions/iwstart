@@ -28,7 +28,7 @@ static void _usage(const char *err) {
     fprintf(stderr, "\nError:\n\n");
     fprintf(stderr, "\t%s\n\n", err);
   }
-  fprintf(stderr, "\n\tIOWOW/IWNET/EJDB2 Project boilerplate generaror\n");
+  fprintf(stderr, "\n\tIOWOW/IWNET/EJDB2 Project boilerplate generator\n");
   fprintf(stderr, "\nUsage %s [options]\n", g_env.program);
   fprintf(stderr, "\t-c, --conf=<>\t\t.ini configuration file\n");
   fprintf(stderr, "\t-V, --verbose\t\tPrint verbose output\n");

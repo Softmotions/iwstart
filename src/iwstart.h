@@ -2,7 +2,6 @@
 
 #include <iowow/iwpool.h>
 
-
 struct env {
   const char  *cwd;
   const char  *program;

@@ -10,7 +10,7 @@ unset(CHANGELOG_LAST_MESSAGE)
 include(DebChangelog)
 include(GitRevision)
 
-set(PROJECT_NAME "{project_name}")
+set(PROJECT_NAME "{project_artifact}")
 set(PROJECT_VENDOR "{project_vendor}")
 set(PROJECT_WEBSITE "{project_website}")
 set(PROJECT_MAINTAINER "{project_author}")

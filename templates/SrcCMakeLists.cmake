@@ -33,8 +33,8 @@ set(CMAKE_C_FLAGS_RELEASEWITHDEBINFO ${CMAKE_C_FLAGS_RELWITHDEBINFO})
 
 find_package(Threads REQUIRED CMAKE_THREAD_PREFER_PTHREAD)
 
-include({project_baselib_cmake})
-set(LINK_LIBS {project_baselib})
+include({project_base_lib_cmake})
+set(LINK_LIBS {project_base_lib})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/include)
 add_definitions(-D_LARGEFILE64_SOURCE)
@@ -44,14 +44,14 @@ file(GLOB ALL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
                ${CMAKE_BINARY_DIR}/include/config.h)
 
-add_executable(iwstart ${ALL_SRC})
-target_link_libraries(iwstart ${LINK_LIBS})
-set_target_properties(iwstart PROPERTIES COMPILE_FLAGS "-DIW_EXEC")
+add_executable({project_artifact} ${ALL_SRC})
+target_link_libraries({project_artifact} ${LINK_LIBS})
+set_target_properties({project_artifact} PROPERTIES COMPILE_FLAGS "-DIW_EXEC")
 
-add_dependencies(iwstart generated)
+add_dependencies({project_artifact} generated)
 
 if(BUILD_TESTS)
-  add_library(iwstart_s ${ALL_SRC})
-  target_link_libraries(iwstart_s PUBLIC ${LINK_LIBS})
+  add_library({project_artifact}_s ${ALL_SRC})
+  target_link_libraries({project_artifact}_s PUBLIC ${LINK_LIBS})
   add_subdirectory(tests)
 endif()
