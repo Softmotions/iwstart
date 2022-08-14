@@ -170,4 +170,15 @@ add_custom_command(
     ${CMAKE_SOURCE_DIR}/templates/TestsCMakeLists.cmake >
     "${CMAKE_BINARY_DIR}/include/tests_cmake_lists.inc")
 
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/app_run.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/app_run.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "app_run"
+    ${CMAKE_SOURCE_DIR}/templates/app_run.c >
+    "${CMAKE_BINARY_DIR}/include/app_run.inc")
+
 add_custom_target(generated DEPENDS ${_TARGETS})

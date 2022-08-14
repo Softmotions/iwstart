@@ -93,7 +93,7 @@ finish:
   return rc;
 }
 
-static iwrc _run(void);
+iwrc run(void);
 
 static int _main(int argc, char *argv[]) {
   int rv = EXIT_SUCCESS;
@@ -169,7 +169,7 @@ static int _main(int argc, char *argv[]) {
     RCC(rc, finish, _config_load());
   }
 
-  rc = _run();
+  rc = run();
 
 finish:
   _destroy();
