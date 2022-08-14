@@ -1,0 +1,7 @@
+{project_name} ({project_version}) UNRELEASED; urgency=medium
+
+  * Initial release.
+    RFC2822 and RFC5322, or what «date -R» generates)
+		day-of-week, dd month yyyy hh:mm:ss +zzzz
+
+ -- {project_author}  {project_date}

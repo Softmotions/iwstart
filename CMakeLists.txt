@@ -2,17 +2,42 @@ cmake_minimum_required(VERSION 3.18.0 FATAL_ERROR)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
                       "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
+set(DEB_CHANGELOG_REQUIRED ON)
+set(DEB_CHANGELOG "${CMAKE_CURRENT_SOURCE_DIR}/Changelog")
+unset(CHANGELOG_LAST_VERSION)
+unset(CHANGELOG_LAST_MESSAGE)
+
+include(DebChangelog)
+include(GitRevision)
+
 set(PROJECT_NAME "iwstart")
+set(PROJECT_VENDOR "Softmotions (https://softmotions.com)")
+set(PROJECT_WEBSITE "https://softmotions.com")
+set(PROJECT_MAINTAINER "Anton Adamansky <adamansky@softmotions.com>")
+set(PROJECT_DESCRIPTION_SUMMARY
+    "Boilerplate generator for C projects based on iowow, iwnet, ejdb2 libraries"
+)
+set(PROJECT_DESCRIPTION ${PROJECT_DESCRIPTION_SUMMARY})
+set(PROJECT_VERSION_MAJOR ${CHANGELOG_LAST_VERSION_MAJOR})
+set(PROJECT_VERSION_MINOR ${CHANGELOG_LAST_VERSION_MINOR})
+set(PROJECT_VERSION_PATCH ${CHANGELOG_LAST_VERSION_PATCH})
+set(PROJECT_VERSION
+    ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
+set(${PROJECT_NAME}_VERSION ${PROJECT_VERSION})
+set(${PROJECT_NAME}_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(${PROJECT_NAME}_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(${PROJECT_NAME}_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+
 project(
   ${PROJECT_NAME}
-  VERSION 1.0.0
+  VERSION ${PROJECT_VERSION}
   LANGUAGES C)
-
-option(BUILD_TESTS "iwstart")
 
 include(GitRevision)
 include(GNUInstallDirs)
 include(ProjectUtils)
+
+option(BUILD_TESTS "Build test cases" OFF)
 
 if(BUILD_TESTS)
   include(CTest)
