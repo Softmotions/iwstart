@@ -375,7 +375,9 @@ static int _main(int argc, char *argv[]) {
     goto finish;
   }
 
-  rc = iws_run();
+  RCC(rc, finish, iws_run());
+
+  fprintf(stdout, "'%s' project created at %s\n", g_env.project_name, g_env.project_directory);
 
 finish:
   _destroy();

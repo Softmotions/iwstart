@@ -3,6 +3,9 @@
 #include "cmake_iowow_add.inc"
 #include "cmake_iwnet_add.inc"
 #include "cmake_ejdb2_add.inc"
+#include "cmake_deb_changelog.inc"
+#include "cmake_git_revision.inc"
+#include "cmake_project_utils.inc"
 
 #include "cmake_lists.inc"
 #include "src_cmake_lists.inc"
@@ -74,11 +77,8 @@ static const char *_keys[] = {
 
 static iwrc _replace(struct ctx *ctx, const char *data, size_t data_len, char **out) {
   iwrc rc = 0;
+  IWXSTR *xstr = 0;
   *out = 0;
-  IWXSTR *xstr = iwxstr_new();
-  if (!xstr) {
-    return iwrc_set_errno(IW_ERROR_ALLOC, errno);
-  }
   RCC(rc, finish, iwu_replace(&xstr, data, data_len, _keys, sizeof(_keys) / sizeof(_keys[0]), _replace_key, ctx));
 finish:
   if (rc) {
@@ -191,6 +191,9 @@ iwrc iws_run(void) {
 #define _INSTALL(name__, replace_data__) \
   RCC(rc, finish, _install(&ctx, name__, name__ ## _len, name__ ## _path, replace_data__))
 
+  _INSTALL(cmake_deb_changelog, false);
+  _INSTALL(cmake_git_revision, false);
+  _INSTALL(cmake_project_utils, false);
   _INSTALL(cmake_iowow_add, false);
   _INSTALL(cmake_iwnet_add, false);
   _INSTALL(cmake_ejdb2_add, false);

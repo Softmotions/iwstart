@@ -85,6 +85,42 @@ add_custom_command(
     ${CMAKE_SOURCE_DIR}/cmake/Modules/AddEJDB2.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_ejdb2_add.inc")
 
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_deb_changelog.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_deb_changelog.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "cmake_deb_changelog" -e
+    'static const char* cmake_deb_changelog_path = \"cmake/Modules/DebChangelog.cmake\"\;'
+    ${CMAKE_SOURCE_DIR}/cmake/Modules/DebChangelog.cmake >
+    "${CMAKE_BINARY_DIR}/include/cmake_deb_changelog.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_git_revision.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_git_revision.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "cmake_git_revision" -e
+    'static const char* cmake_git_revision_path = \"cmake/Modules/GitRevision.cmake\"\;'
+    ${CMAKE_SOURCE_DIR}/cmake/Modules/GitRevision.cmake >
+    "${CMAKE_BINARY_DIR}/include/cmake_git_revision.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_project_utils.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_project_utils.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "cmake_project_utils" -e
+    'static const char* cmake_project_utils_path = \"cmake/Modules/ProjectUtils.cmake\"\;'
+    ${CMAKE_SOURCE_DIR}/cmake/Modules/ProjectUtils.cmake >
+    "${CMAKE_BINARY_DIR}/include/cmake_project_utils.inc")
+
 list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_lists.inc")
 add_custom_command(
   OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_lists.inc"
@@ -262,7 +298,6 @@ add_custom_command(
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "lvimrc" -e
     'static const char* lvimrc_path = \".lvimrc\"\;'
-    ${CMAKE_SOURCE_DIR}/.lvimrc >
-    "${CMAKE_BINARY_DIR}/include/lvimrc.inc")
+    ${CMAKE_SOURCE_DIR}/.lvimrc > "${CMAKE_BINARY_DIR}/include/lvimrc.inc")
 
 add_custom_target(generated DEPENDS ${_TARGETS})
