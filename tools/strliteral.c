@@ -33,7 +33,9 @@ static void usage(const char *argv0) {
     "\t--no-const                  Output mutable variables instead of consts\n"
     "\t--always-escape             Unconditionally escape every character\n"
     "\t-l, --line-length <length>  Specify how long a line should be\n"
-    "\t-i, --ident <ident>         Overwrite the identifier instead of using the file name");
+    "\t-i, --ident <ident>         Overwrite the identifier instead of using the file name\n"
+    "\t-e, --extra <extra>         Append extra data to the generated header\n"
+    );
 }
 
 int main(int argc, char **argv) {
@@ -42,6 +44,7 @@ int main(int argc, char **argv) {
   FILE *inf = stdin, *outf = stdout;
   char *ident = NULL;
   char *buffer = NULL;
+  char *extra = NULL;
   char *conststr = "static const ";
   int alwaysescape = 0;
   size_t maxlength = 120;
@@ -66,13 +69,19 @@ int main(int argc, char **argv) {
         goto fail;
       }
       maxlength = (size_t) atoi(argv[++argidx]);
-    } else if ((strcmp(arg, "--ident") == 0) || (strcmp(arg, "-i") == 0)) {
+    } else if (strcmp(arg, "--ident") == 0 || strcmp(arg, "-i") == 0) {
       if (argidx + 1 >= argc) {
         fprintf(stderr, "%s requires an argument\n", arg);
         goto fail;
       }
       ident = dupstr(argv[++argidx]);
       make_identifier(ident);
+    } else if (strcmp(arg, "--extra") == 0 || strcmp(arg, "-e") == 0) {
+      if (argidx + 1 >= argc) {
+        fprintf(stderr, "%s requires and argument\n", arg);
+        goto fail;
+      }
+      extra = dupstr(argv[++argidx]);
     } else {
       fprintf(stderr, "Unknown option: %s\n", arg);
       usage(argv[0]);
@@ -185,6 +194,16 @@ int main(int argc, char **argv) {
     goto fail;
   }
 
+  if (extra) {
+    if (  fwrite("\n", 1, 1, outf) != 1
+       || fwrite(extra, strlen(extra), 1, outf) != 1
+       || fwrite("\n", 1, 1, outf) != 1) {
+      perror("write extra");
+      goto fail;
+    }
+  }
+
+
   if (fclose(inf) == EOF) {
     perror("close");
     goto fail;
@@ -198,6 +217,7 @@ int main(int argc, char **argv) {
 exit:
   free(ident);
   free(buffer);
+  free(extra);
   return ret;
 
 fail:

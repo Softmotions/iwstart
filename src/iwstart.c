@@ -175,7 +175,7 @@ static bool _do_checks_dirs(void) {
   return true;
 }
 
-iwrc run(void);
+iwrc iws_run(void);
 
 static int _main(int argc, char *argv[]) {
   int rv = EXIT_SUCCESS;
@@ -308,7 +308,7 @@ static int _main(int argc, char *argv[]) {
     goto finish;
   }
 
-  rc = run();
+  rc = iws_run();
 
 finish:
   _destroy();

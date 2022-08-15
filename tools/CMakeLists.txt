@@ -56,7 +56,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "cmake_iowow_add"
+  $<TARGET_FILE:hoststrliteral> -i "cmake_iowow_add" 
+    -e 'static const char* cmake_iowow_add_path = \"cmake/Modules/AddIOWOW.cmake\"\;'
     ${CMAKE_SOURCE_DIR}/cmake/Modules/AddIOWOW.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_iowow_add.inc")
 
@@ -68,6 +69,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "cmake_iwnet_add"
+    -e 'static const char* cmake_iwnet_add_path = \"cmake/Modules/AddIWNET.cmake\"\;'    
     ${CMAKE_SOURCE_DIR}/cmake/Modules/AddIWNET.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_iwnet_add.inc")
 
@@ -79,6 +81,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "cmake_ejdb2_add"
+    -e 'static const char* cmake_ejdb2_add_path = \"cmake/Modules/AddEJDB2.cmake\"\;'    
     ${CMAKE_SOURCE_DIR}/cmake/Modules/AddEJDB2.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_ejdb2_add.inc")
 
@@ -90,6 +93,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "cmake_lists"
+    -e 'static const char* cmake_lists_path = \"CMakeLists.txt\"\;'    
     ${CMAKE_SOURCE_DIR}/templates/CMakeLists.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_lists.inc")
 
@@ -101,6 +105,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "src_cmake_lists"
+    -e 'static const char* src_cmake_lists_path = \"src/CMakeLists.txt\"\;'    
     ${CMAKE_SOURCE_DIR}/templates/SrcCMakeLists.cmake >
     "${CMAKE_BINARY_DIR}/include/src_cmake_lists.inc")
 
@@ -112,6 +117,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "app_c"
+    -e 'static const char* app_c_path = \"src/{project_artifact}.c\"\;'    
     ${CMAKE_SOURCE_DIR}/templates/app.c >
     "${CMAKE_BINARY_DIR}/include/app_c.inc")
 
@@ -123,6 +129,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "app_h"
+    -e 'static const char* app_h_path = \"src/{project_artifact}.h\"\;'    
     ${CMAKE_SOURCE_DIR}/templates/app.h >
     "${CMAKE_BINARY_DIR}/include/app_h.inc")
 
@@ -134,6 +141,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "app_json"
+    -e 'static const char* app_json_path = \"app.json\"\;'    
     ${CMAKE_SOURCE_DIR}/templates/app.json >
     "${CMAKE_BINARY_DIR}/include/app_json.inc")
 
@@ -145,6 +153,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "readme_md"
+    -e 'static const char* readme_md_path = \"README.md\"\;'    
     ${CMAKE_SOURCE_DIR}/templates/README.md >
     "${CMAKE_BINARY_DIR}/include/readme_md.inc")
 
@@ -156,6 +165,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "test1"
+    -e 'static const char* test1_path = \"src/tests/test1.c\"\;'    
     ${CMAKE_SOURCE_DIR}/templates/test1.c >
     "${CMAKE_BINARY_DIR}/include/test1.inc")
 
@@ -167,6 +177,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "tests_cmake_lists"
+    -e 'static const char* tests_cmake_lists_path = \"src/tests/CMakeLists.txt\"\;'
     ${CMAKE_SOURCE_DIR}/templates/TestsCMakeLists.cmake >
     "${CMAKE_BINARY_DIR}/include/tests_cmake_lists.inc")
 
@@ -178,6 +189,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "app_run"
+    -e 'static const char* app_run_path = \"src/{project_artifact}_run.c\"\;'    
     ${CMAKE_SOURCE_DIR}/templates/app_run.c >
     "${CMAKE_BINARY_DIR}/include/app_run.inc")
 
