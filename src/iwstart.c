@@ -17,6 +17,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <time.h>
 
 struct env g_env = { 0 };
 
@@ -36,6 +37,8 @@ static void _usage(const char *err) {
   fprintf(stderr, "\t  -b, --base=<>\t\tProject base lib. Either of: iowow,iwnet,ejdb2. Default: iwnet\n");
   fprintf(stderr, "\t  -d, --description=<>\tProject description text.\n");
   fprintf(stderr, "\t  -l, --license=<>\tProject license name.\n");
+  fprintf(stderr, "\t  -u, --author=<>\tProject author.\n");
+  fprintf(stderr, "\t  -w, --website=<>\tProject website.\n");
   fprintf(stderr, "\t  -c, --conf=<>\t\t.ini configuration file.\n");
   fprintf(stderr, "\t  -V, --verbose\t\tPrint verbose output.\n");
   fprintf(stderr, "\t  -v, --version\t\tShow program version.\n");
@@ -228,11 +231,13 @@ static int _main(int argc, char *argv[]) {
     { "name",        1, 0, 'n' },
     { "base",        1, 0, 'b' },
     { "description", 1, 0, 'd' },
-    { "license",     1, 0, 'l' }
+    { "license",     1, 0, 'l' },
+    { "author",      1, 0, 'u' },
+    { "website",     1, 0, 'w' }
   };
 
   int ch;
-  while ((ch = getopt_long(argc, argv, "b:a:n:d:l:c:hvV", long_options, 0)) != -1) {
+  while ((ch = getopt_long(argc, argv, "b:a:n:d:l:u:w:c:hvV", long_options, 0)) != -1) {
     switch (ch) {
       case 'h':
         _usage(0);
@@ -265,6 +270,9 @@ static int _main(int argc, char *argv[]) {
         break;
       case 'l':
         RCB(finish, g_env.project_license = iwpool_strdup2(g_env.pool, optarg));
+        break;
+      case 'w':
+        RCB(finish, g_env.project_website = iwpool_strdup2(g_env.pool, optarg));
         break;
       default:
         _usage(0);
@@ -307,6 +315,51 @@ static int _main(int argc, char *argv[]) {
     rv = EXIT_FAILURE;
     goto finish;
   }
+
+  if (!g_env.project_version) {
+    g_env.project_version = "1.0.0";
+  }
+
+  if (!g_env.project_description) {
+    g_env.project_description = "";
+  }
+
+  if (!g_env.project_website) {
+    g_env.project_website = "";
+  }
+
+  if (!g_env.project_author) {
+    if (getenv("DEBFULLNAME")) {
+      IWXSTR *xstr = iwxstr_new();
+      RCB(finish, xstr);
+      RCC(rc, finish, iwxstr_cat2(xstr, getenv("DEBFULLNAME")));
+      if (getenv("DEBEMAIL")) {
+        RCC(rc, finish, iwxstr_printf(xstr, " <%s>", getenv("DEBEMAIL")));
+      }
+      RCB(finish, g_env.project_author = iwpool_strndup2(g_env.pool, iwxstr_ptr(xstr), iwxstr_size(xstr)));
+      iwxstr_destroy(xstr);
+    } else if (getenv("USER")) {
+      g_env.project_author = getenv("USER");
+    } else if (getenv("LOGNAME")) {
+      g_env.project_author = getenv("LOGNAME");
+    }
+    if (!g_env.project_author) {
+      g_env.project_author = "";
+    }
+  }
+
+  if (!g_env.project_date) {
+    time_t current;
+    char rfc_2822[40];
+    time(&current);
+    strftime(
+      rfc_2822,
+      sizeof(rfc_2822),
+      "%a, %d %b %Y %T %z",
+      localtime(&current));
+    RCB(finish, g_env.project_date = iwpool_strdup2(g_env.pool, rfc_2822));
+  }
+
 
   if (g_env.project_flags & PROJECT_FLG_IOWOW) {
     g_env.project_base_lib_cmake = "AddIOWOW";

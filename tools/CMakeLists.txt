@@ -56,8 +56,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-  $<TARGET_FILE:hoststrliteral> -i "cmake_iowow_add" 
-    -e 'static const char* cmake_iowow_add_path = \"cmake/Modules/AddIOWOW.cmake\"\;'
+    $<TARGET_FILE:hoststrliteral> -i "cmake_iowow_add" -e
+    'static const char* cmake_iowow_add_path = \"cmake/Modules/AddIOWOW.cmake\"\;'
     ${CMAKE_SOURCE_DIR}/cmake/Modules/AddIOWOW.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_iowow_add.inc")
 
@@ -68,8 +68,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "cmake_iwnet_add"
-    -e 'static const char* cmake_iwnet_add_path = \"cmake/Modules/AddIWNET.cmake\"\;'    
+    $<TARGET_FILE:hoststrliteral> -i "cmake_iwnet_add" -e
+    'static const char* cmake_iwnet_add_path = \"cmake/Modules/AddIWNET.cmake\"\;'
     ${CMAKE_SOURCE_DIR}/cmake/Modules/AddIWNET.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_iwnet_add.inc")
 
@@ -80,8 +80,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "cmake_ejdb2_add"
-    -e 'static const char* cmake_ejdb2_add_path = \"cmake/Modules/AddEJDB2.cmake\"\;'    
+    $<TARGET_FILE:hoststrliteral> -i "cmake_ejdb2_add" -e
+    'static const char* cmake_ejdb2_add_path = \"cmake/Modules/AddEJDB2.cmake\"\;'
     ${CMAKE_SOURCE_DIR}/cmake/Modules/AddEJDB2.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_ejdb2_add.inc")
 
@@ -92,8 +92,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "cmake_lists"
-    -e 'static const char* cmake_lists_path = \"CMakeLists.txt\"\;'    
+    $<TARGET_FILE:hoststrliteral> -i "cmake_lists" -e
+    'static const char* cmake_lists_path = \"CMakeLists.txt\"\;'
     ${CMAKE_SOURCE_DIR}/templates/CMakeLists.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_lists.inc")
 
@@ -104,8 +104,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "src_cmake_lists"
-    -e 'static const char* src_cmake_lists_path = \"src/CMakeLists.txt\"\;'    
+    $<TARGET_FILE:hoststrliteral> -i "src_cmake_lists" -e
+    'static const char* src_cmake_lists_path = \"src/CMakeLists.txt\"\;'
     ${CMAKE_SOURCE_DIR}/templates/SrcCMakeLists.cmake >
     "${CMAKE_BINARY_DIR}/include/src_cmake_lists.inc")
 
@@ -116,8 +116,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "app_c"
-    -e 'static const char* app_c_path = \"src/{project_artifact}.c\"\;'    
+    $<TARGET_FILE:hoststrliteral> -i "app_c" -e
+    'static const char* app_c_path = \"src/{project_artifact}.c\"\;'
     ${CMAKE_SOURCE_DIR}/templates/app.c >
     "${CMAKE_BINARY_DIR}/include/app_c.inc")
 
@@ -128,22 +128,10 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "app_h"
-    -e 'static const char* app_h_path = \"src/{project_artifact}.h\"\;'    
+    $<TARGET_FILE:hoststrliteral> -i "app_h" -e
+    'static const char* app_h_path = \"src/{project_artifact}.h\"\;'
     ${CMAKE_SOURCE_DIR}/templates/app.h >
     "${CMAKE_BINARY_DIR}/include/app_h.inc")
-
-list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/app_json.inc")
-add_custom_command(
-  OUTPUT "${CMAKE_BINARY_DIR}/include/app_json.inc"
-  DEPENDS hoststrliteral
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
-  COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "app_json"
-    -e 'static const char* app_json_path = \"app.json\"\;'    
-    ${CMAKE_SOURCE_DIR}/templates/app.json >
-    "${CMAKE_BINARY_DIR}/include/app_json.inc")
 
 list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/readme_md.inc")
 add_custom_command(
@@ -152,8 +140,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "readme_md"
-    -e 'static const char* readme_md_path = \"README.md\"\;'    
+    $<TARGET_FILE:hoststrliteral> -i "readme_md" -e
+    'static const char* readme_md_path = \"README.md\"\;'
     ${CMAKE_SOURCE_DIR}/templates/README.md >
     "${CMAKE_BINARY_DIR}/include/readme_md.inc")
 
@@ -164,8 +152,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "test1"
-    -e 'static const char* test1_path = \"src/tests/test1.c\"\;'    
+    $<TARGET_FILE:hoststrliteral> -i "test1" -e
+    'static const char* test1_path = \"src/tests/test1.c\"\;'
     ${CMAKE_SOURCE_DIR}/templates/test1.c >
     "${CMAKE_BINARY_DIR}/include/test1.inc")
 
@@ -176,10 +164,34 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "tests_cmake_lists"
-    -e 'static const char* tests_cmake_lists_path = \"src/tests/CMakeLists.txt\"\;'
+    $<TARGET_FILE:hoststrliteral> -i "tests_cmake_lists" -e
+    'static const char* tests_cmake_lists_path = \"src/tests/CMakeLists.txt\"\;'
     ${CMAKE_SOURCE_DIR}/templates/TestsCMakeLists.cmake >
     "${CMAKE_BINARY_DIR}/include/tests_cmake_lists.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/tools_cmake_lists.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/tools_cmake_lists.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "tools_cmake_lists" -e
+    'static const char* tools_cmake_lists_path = \"tools/CMakeLists.txt\"\;'
+    ${CMAKE_SOURCE_DIR}/templates/ToolsCMakeLists.cmake >
+    "${CMAKE_BINARY_DIR}/include/tools_cmake_lists.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/tools_strliteral.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/tools_strliteral.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "tools_strliteral" -e
+    'static const char* tools_strliteral_path = \"tools/strliteral.c\"\;'
+    ${CMAKE_SOURCE_DIR}/tools/strliteral.c >
+    "${CMAKE_BINARY_DIR}/include/tools_strliteral.inc")
 
 list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/app_run.inc")
 add_custom_command(
@@ -188,9 +200,69 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "app_run"
-    -e 'static const char* app_run_path = \"src/{project_artifact}_run.c\"\;'    
+    $<TARGET_FILE:hoststrliteral> -i "app_run" -e
+    'static const char* app_run_path = \"src/{project_artifact}_run.c\"\;'
     ${CMAKE_SOURCE_DIR}/templates/app_run.c >
     "${CMAKE_BINARY_DIR}/include/app_run.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/changelog.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/changelog.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "changelog" -e
+    'static const char* changelog_path = \"Changelog\"\;'
+    ${CMAKE_SOURCE_DIR}/templates/Changelog >
+    "${CMAKE_BINARY_DIR}/include/changelog.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/license.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/license.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "license" -e
+    'static const char* license_path = \"LICENSE\"\;'
+    ${CMAKE_SOURCE_DIR}/templates/LICENSE >
+    "${CMAKE_BINARY_DIR}/include/license.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/gitignore.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/gitignore.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "gitignore" -e
+    'static const char* gitignore_path = \".gitignore\"\;'
+    ${CMAKE_SOURCE_DIR}/.gitignore >
+    "${CMAKE_BINARY_DIR}/include/gitignore.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/uncrustify.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/uncrustify.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "uncrustify" -e
+    'static const char* uncrustify_path = \"uncrustify.cfg\"\;'
+    ${CMAKE_SOURCE_DIR}/uncrustify.cfg >
+    "${CMAKE_BINARY_DIR}/include/uncrustify.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/lvimrc.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/lvimrc.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "lvimrc" -e
+    'static const char* lvimrc_path = \".lvimrc\"\;'
+    ${CMAKE_SOURCE_DIR}/.lvimrc >
+    "${CMAKE_BINARY_DIR}/include/lvimrc.inc")
 
 add_custom_target(generated DEPENDS ${_TARGETS})

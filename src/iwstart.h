@@ -24,6 +24,10 @@ struct env {
   const char *project_base_lib;
   const char *project_base_lib_cmake;
   const char *project_base_lib_static;
+  const char *project_version;
+  const char *project_author;
+  const char *project_date;
+  const char *project_website;
   uint32_t    project_flags;
 
   int  argc;

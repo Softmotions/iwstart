@@ -6,21 +6,30 @@
 
 #include "cmake_lists.inc"
 #include "src_cmake_lists.inc"
+
 #include "tests_cmake_lists.inc"
+#include "test1.inc"
+
+#include "tools_cmake_lists.inc"
+#include "tools_strliteral.inc"
 
 #include "app_h.inc"
 #include "app_c.inc"
 #include "app_run.inc"
-#include "test1.inc"
 
-#include "app_json.inc"
 #include "readme_md.inc"
+#include "changelog.inc"
+#include "uncrustify.inc"
+#include "lvimrc.inc"
+#include "gitignore.inc"
+#include "license.inc"
 
 #include <iowow/iwlog.h>
 #include <iowow/iwp.h>
 #include <iowow/iwhmap.h>
 #include <iowow/iwxstr.h>
 #include <iowow/iwutils.h>
+#include <iowow/iwjson.h>
 
 #include <stdio.h>
 #include <errno.h>
@@ -36,7 +45,9 @@ static const char* _replace_key(const char *key, void *d) {
   struct ctx *ctx = d;
   size_t off = (uintptr_t) iwhmap_get(ctx->keys, key);
   if (off) {
-    return (void*) &g_env + off;
+    const char *pv;
+    memcpy(&pv, (char*) &g_env + off, sizeof(const char*));
+    return pv;
   } else if (!strcmp("{home}", key)) {
     return getenv("HOME");
   } else {
@@ -54,7 +65,11 @@ static const char *_keys[] = {
   "{project_directory}",
   "{project_base_lib}",
   "{project_base_lib_cmake}",
-  "{project_base_lib_static}"
+  "{project_base_lib_static}",
+  "{project_version}",
+  "{project_author}",
+  "{project_date}",
+  "{project_website}"
 };
 
 static iwrc _replace(struct ctx *ctx, const char *data, size_t data_len, char **out) {
@@ -75,18 +90,28 @@ finish:
   return rc;
 }
 
-static iwrc _install(struct ctx *ctx, const unsigned char *data_, const unsigned int data_len, const char *path_) {
+static iwrc _install(
+  struct ctx          *ctx,
+  const unsigned char *data_,
+  const unsigned int   data_len,
+  const char          *path_,
+  bool                 replace_data
+  ) {
   iwrc rc = 0;
   char *path = 0, *data = 0;
   FILE *file = 0;
   IWXSTR *xstr = iwxstr_new();
   RCB(finish, xstr);
   RCC(rc, finish, _replace(ctx, path_, strlen(path_), &path));
-  RCC(rc, finish, _replace(ctx, (char*) data_, data_len, &data));
+  if (replace_data) {
+    RCC(rc, finish, _replace(ctx, (char*) data_, data_len, &data));
+  } else {
+    data = (char*) data_;
+  }
   RCC(rc, finish, iwxstr_printf(xstr, "%s/%s", g_env.project_directory, path));
   RCC(rc, finish, iwp_mkdirs_for_file(iwxstr_ptr(xstr)));
 
-  file = fopen(path, "w+");
+  file = fopen(iwxstr_ptr(xstr), "w+");
   if (!file) {
     rc = iwrc_set_errno(IW_ERROR_IO_ERRNO, errno);
     goto finish;
@@ -100,10 +125,43 @@ static iwrc _install(struct ctx *ctx, const unsigned char *data_, const unsigned
 
 finish:
   iwxstr_destroy(xstr);
-  free(path);
+  if (path != path_) {
+    free(path);
+  }
+  if (data != (char*) data_) {
+    free(data);
+  }
   if (file) {
     fclose(file);
   }
+  return rc;
+}
+
+static iwrc _install_app_json(struct ctx *ctx) {
+  iwrc rc = 0;
+  IWXSTR *xstr = 0;
+  JBL jbl;
+  
+  RCB(finish, xstr = iwxstr_new());
+  RCC(rc, finish, jbl_create_empty_object(&jbl));
+  RCC(rc, finish, jbl_set_string(jbl, "project_artifact", g_env.project_artifact));
+  RCC(rc, finish, jbl_set_string(jbl, "project_author", g_env.project_author));
+  RCC(rc, finish, jbl_set_string(jbl, "project_base_lib", g_env.project_base_lib));
+  RCC(rc, finish, jbl_set_string(jbl, "project_base_lib_cmake", g_env.project_base_lib_cmake));
+  RCC(rc, finish, jbl_set_string(jbl, "project_base_lib_static", g_env.project_base_lib_static));
+  RCC(rc, finish, jbl_set_string(jbl, "project_date", g_env.project_date));
+  RCC(rc, finish, jbl_set_string(jbl, "project_description", g_env.project_description));
+  RCC(rc, finish, jbl_set_string(jbl, "project_license", g_env.project_license));
+  RCC(rc, finish, jbl_set_string(jbl, "project_name", g_env.project_name));
+  RCC(rc, finish, jbl_set_string(jbl, "project_website", g_env.project_website));
+
+  RCC(rc, finish, jbl_as_json(jbl, jbl_xstr_json_printer, xstr, JBL_PRINT_PRETTY));
+
+  rc = _install(ctx, (void*) iwxstr_ptr(xstr), iwxstr_size(xstr), ".app.json", false);
+
+finish:
+  iwxstr_destroy(xstr);
+  jbl_destroy(&jbl);
   return rc;
 }
 
@@ -125,22 +183,34 @@ iwrc iws_run(void) {
       iwhmap_put(ctx.keys, "{project_base_lib_cmake}", (void*) offsetof(struct env, project_base_lib_cmake)));
   RCC(rc, finish,
       iwhmap_put(ctx.keys, "{project_base_lib_static}", (void*) offsetof(struct env, project_base_lib_static)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_version}", (void*) offsetof(struct env, project_version)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_author}", (void*) offsetof(struct env, project_author)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_date}", (void*) offsetof(struct env, project_date)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_website}", (void*) offsetof(struct env, project_website)));
 
-#define _INSTALL(name__) \
-  RCC(rc, finish, _install(&ctx, name__, name__ ## _len, name__ ## _path))
+#define _INSTALL(name__, replace_data__) \
+  RCC(rc, finish, _install(&ctx, name__, name__ ## _len, name__ ## _path, replace_data__))
 
-  _INSTALL(cmake_iowow_add);
-  _INSTALL(cmake_iwnet_add);
-  _INSTALL(cmake_ejdb2_add);
-  _INSTALL(cmake_lists);
-  _INSTALL(src_cmake_lists);
-  _INSTALL(app_c);
-  _INSTALL(app_h);
-  _INSTALL(app_json);
-  _INSTALL(readme_md);
-  _INSTALL(test1);
-  _INSTALL(tests_cmake_lists);
-  _INSTALL(app_run);
+  _INSTALL(cmake_iowow_add, false);
+  _INSTALL(cmake_iwnet_add, false);
+  _INSTALL(cmake_ejdb2_add, false);
+  _INSTALL(cmake_lists, true);
+  _INSTALL(src_cmake_lists, true);
+  _INSTALL(app_c, true);
+  _INSTALL(app_h, true);
+  _INSTALL(app_run, true);
+  _INSTALL(test1, true);
+  _INSTALL(tests_cmake_lists, true);
+  _INSTALL(tools_cmake_lists, true);
+  _INSTALL(tools_strliteral, false);
+  _INSTALL(readme_md, true);
+  _INSTALL(changelog, true);
+  _INSTALL(uncrustify, false);
+  _INSTALL(lvimrc, false);
+  _INSTALL(gitignore, false);
+  _INSTALL(license, true);
+  RCC(rc, finish, _install_app_json(&ctx));
+
 
 #undef _INSTALL
 

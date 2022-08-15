@@ -56,5 +56,5 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
-    $<TARGET_FILE:hoststrliteral> -i "app.json" ${CMAKE_SOURCE_DIR}/app.json >
+    $<TARGET_FILE:hoststrliteral> -i "app_json" ${CMAKE_SOURCE_DIR}/.app.json >
     "${CMAKE_BINARY_DIR}/include/app_json.inc")
