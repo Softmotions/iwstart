@@ -91,6 +91,18 @@ finish:
   return rc;
 }
 
+static iwrc _mkdir(struct ctx *ctx, const char *dir) {
+  iwrc rc = 0;
+  IWXSTR *xstr = iwxstr_new();
+  RCB(finish, xstr);
+  RCC(rc, finish, iwxstr_printf(xstr, "%s/%s", g_env.project_directory, dir));
+  RCC(rc, finish, iwp_mkdirs(iwxstr_ptr(xstr)));
+
+finish:
+  iwxstr_destroy(xstr);
+  return rc;
+}
+
 static iwrc _install(
   struct ctx          *ctx,
   const unsigned char *data_,
@@ -142,7 +154,7 @@ static iwrc _install_app_json(struct ctx *ctx) {
   iwrc rc = 0;
   IWXSTR *xstr = 0;
   JBL jbl;
-  
+
   RCB(finish, xstr = iwxstr_new());
   RCC(rc, finish, jbl_create_empty_object(&jbl));
   RCC(rc, finish, jbl_set_string(jbl, "project_artifact", g_env.project_artifact));
@@ -210,11 +222,16 @@ iwrc iws_run(void) {
   _INSTALL(tools_strliteral, false);
   _INSTALL(readme_md, true);
   _INSTALL(changelog, true);
-  _INSTALL(uncrustify, false);
-  _INSTALL(lvimrc, false);
+  if (!(g_env.project_flags & PROJECT_FLG_NO_UNCRUSTIFY)) {
+    _INSTALL(uncrustify, false);
+  }
+  if (!(g_env.project_flags & PROJECT_FLG_NO_LVIMRC)) {
+    _INSTALL(lvimrc, false);
+  }
   _INSTALL(gitignore, false);
   _INSTALL(license, true);
   RCC(rc, finish, _install_app_json(&ctx));
+  _mkdir(&ctx, "build");
 
 
 #undef _INSTALL

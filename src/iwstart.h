@@ -2,9 +2,11 @@
 
 #include <iowow/iwpool.h>
 
-#define PROJECT_FLG_IOWOW 0x01U
-#define PROJECT_FLG_IWNET 0x02U
-#define PROJECT_FLG_EJDB2 0x04U
+#define PROJECT_FLG_IOWOW         0x01U
+#define PROJECT_FLG_IWNET         0x02U
+#define PROJECT_FLG_EJDB2         0x04U
+#define PROJECT_FLG_NO_UNCRUSTIFY 0x08U
+#define PROJECT_FLG_NO_LVIMRC     0x10U
 
 
 struct env {

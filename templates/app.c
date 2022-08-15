@@ -179,12 +179,6 @@ finish:
   return rv;
 }
 
-static iwrc _run(void) {
-  iwrc rc = 0;
-  fprintf(stderr, "Hello\n");
-  return rc;
-}
-
 #ifdef IW_EXEC
 
 int main(int argc, char *argv[]) {

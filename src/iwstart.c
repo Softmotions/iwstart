@@ -39,6 +39,8 @@ static void _usage(const char *err) {
   fprintf(stderr, "\t  -l, --license=<>\tProject license name.\n");
   fprintf(stderr, "\t  -u, --author=<>\tProject author.\n");
   fprintf(stderr, "\t  -w, --website=<>\tProject website.\n");
+  fprintf(stderr, "\t      --no-uncrustify\tDisable uncrustify code form atter config\n");
+  fprintf(stderr, "\t      --no-lvimrc\tDisable .lvimrc vim file generation\n");
   fprintf(stderr, "\t  -c, --conf=<>\t\t.ini configuration file.\n");
   fprintf(stderr, "\t  -V, --verbose\t\tPrint verbose output.\n");
   fprintf(stderr, "\t  -v, --version\t\tShow program version.\n");
@@ -100,7 +102,6 @@ static void _on_signal(int signo) {
 
 static int _ini_handler(void *user_data, const char *section, const char *name, const char *value) {
   iwrc rc = 0;
-  struct init *init = user_data;
   iwlog_info("%s:%s=%s", section, name, value);
   if (!section || !strcmp(section, "main")) {
     if (!strcmp(name, "verbose")) {
@@ -222,18 +223,20 @@ static int _main(int argc, char *argv[]) {
   }
 
   static const struct option long_options[] = {
-    { "help",        0, 0, 'h' },
-    { "verbose",     0, 0, 'V' },
-    { "version",     0, 0, 'v' },
-    { "conf",        1, 0, 'c' },
+    { "help",          0, 0, 'h' },
+    { "verbose",       0, 0, 'V' },
+    { "version",       0, 0, 'v' },
+    { "conf",          1, 0, 'c' },
     //
-    { "artifact",    1, 0, 'a' },
-    { "name",        1, 0, 'n' },
-    { "base",        1, 0, 'b' },
-    { "description", 1, 0, 'd' },
-    { "license",     1, 0, 'l' },
-    { "author",      1, 0, 'u' },
-    { "website",     1, 0, 'w' }
+    { "artifact",      1, 0, 'a' },
+    { "name",          1, 0, 'n' },
+    { "base",          1, 0, 'b' },
+    { "description",   1, 0, 'd' },
+    { "license",       1, 0, 'l' },
+    { "author",        1, 0, 'u' },
+    { "website",       1, 0, 'w' },
+    { "no-uncrustify", 0, 0, 'U' },
+    { "no-lvimrc",     0, 0, 'L' },
   };
 
   int ch;
@@ -273,6 +276,12 @@ static int _main(int argc, char *argv[]) {
         break;
       case 'w':
         RCB(finish, g_env.project_website = iwpool_strdup2(g_env.pool, optarg));
+        break;
+      case 'U':
+        g_env.project_flags |= PROJECT_FLG_NO_UNCRUSTIFY;
+        break;
+      case 'L':
+        g_env.project_flags |= PROJECT_FLG_NO_LVIMRC;
         break;
       default:
         _usage(0);
