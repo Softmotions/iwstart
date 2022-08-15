@@ -5,5 +5,5 @@
 iwrc run(void) {
   iwrc rc = 0;
   fprintf(stderr, "Hello!\n");
-  return 0;
+  return rc;
 }
