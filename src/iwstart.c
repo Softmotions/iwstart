@@ -83,6 +83,8 @@ static bool _project_base_lib_set(const char *val) {
     g_env.project_flags |= PROJECT_FLG_IWNET;
   } else if (!strcmp(val, "ejdb2")) {
     g_env.project_flags |= PROJECT_FLG_EJDB2;
+  } else {
+    goto fail;
   }
   g_env.project_base_lib = iwpool_strdup2(g_env.pool, val);
   return g_env.project_base_lib != 0;
