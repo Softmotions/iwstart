@@ -44,7 +44,6 @@ make install
 
 ```sh
 iwstart -a myproj --name="My project" -b iowow ./myproj
-'My project' project created at ./myproj
 
 cd ./myproj/build
 
