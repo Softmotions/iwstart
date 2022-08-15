@@ -268,6 +268,7 @@ static int _main(int argc, char *argv[]) {
       case 'b':
         if (!_project_base_lib_set(optarg)) {
           rv = EXIT_FAILURE;
+          goto finish;
         }
         break;
       case 'd':
