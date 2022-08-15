@@ -169,6 +169,18 @@ add_custom_command(
     ${CMAKE_SOURCE_DIR}/templates/app.h >
     "${CMAKE_BINARY_DIR}/include/app_h.inc")
 
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/config_h.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/config_h.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "config_h" -e
+    'static const char* config_h_path = \"src/config.h.in\"\;'
+    ${CMAKE_SOURCE_DIR}/src/config.h.in >
+    "${CMAKE_BINARY_DIR}/include/config_h.inc")
+
 list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/readme_md.inc")
 add_custom_command(
   OUTPUT "${CMAKE_BINARY_DIR}/include/readme_md.inc"

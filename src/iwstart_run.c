@@ -19,6 +19,7 @@
 #include "app_h.inc"
 #include "app_c.inc"
 #include "app_run.inc"
+#include "config_h.inc"
 
 #include "readme_md.inc"
 #include "changelog.inc"
@@ -201,6 +202,7 @@ iwrc iws_run(void) {
   _INSTALL(src_cmake_lists, true);
   _INSTALL(app_c, true);
   _INSTALL(app_h, true);
+  _INSTALL(config_h, false);
   _INSTALL(app_run, true);
   _INSTALL(test1, true);
   _INSTALL(tests_cmake_lists, true);

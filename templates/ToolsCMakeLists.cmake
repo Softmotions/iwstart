@@ -58,3 +58,5 @@ add_custom_command(
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "app_json" ${CMAKE_SOURCE_DIR}/.app.json >
     "${CMAKE_BINARY_DIR}/include/app_json.inc")
+
+add_custom_target(generated DEPENDS ${_TARGETS})
