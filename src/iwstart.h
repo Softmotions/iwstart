@@ -18,10 +18,12 @@ struct env {
 
   const char *project_artifact;
   const char *project_name;
-  const char *project_base_lib;
   const char *project_description;
   const char *project_license;
   const char *project_directory;
+  const char *project_base_lib;
+  const char *project_base_lib_cmake;
+  const char *project_base_lib_static;
   uint32_t    project_flags;
 
   int  argc;

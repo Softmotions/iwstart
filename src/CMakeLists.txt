@@ -34,10 +34,7 @@ set(CMAKE_C_FLAGS_RELEASEWITHDEBINFO ${CMAKE_C_FLAGS_RELWITHDEBINFO})
 find_package(Threads REQUIRED CMAKE_THREAD_PREFER_PTHREAD)
 
 include(AddIOWOW)
-# include(AddIWNET) include(AddEJDB2)
-
 set(LINK_LIBS IOWOW::static)
-# set(LINK_LIBS IWNET::static) set(LINK_LIBS EJDB2::static)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/include)
 

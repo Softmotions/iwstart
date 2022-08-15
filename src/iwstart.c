@@ -308,6 +308,20 @@ static int _main(int argc, char *argv[]) {
     goto finish;
   }
 
+  if (g_env.project_flags & PROJECT_FLG_IOWOW) {
+    g_env.project_base_lib_cmake = "AddIOWOW";
+    g_env.project_base_lib_static = "IOWOW::static";
+  } else if (g_env.project_flags & PROJECT_FLG_IWNET) {
+    g_env.project_base_lib_cmake = "AddIWNET";
+    g_env.project_base_lib_static = "IWNET::static";
+  } else if (g_env.project_flags & PROJECT_FLG_EJDB2) {
+    g_env.project_base_lib_cmake = "AddEJDB2";
+    g_env.project_base_lib_static = "EJDB2::static";
+  } else {
+    rc = IW_ERROR_ASSERTION;
+    goto finish;
+  }
+
   rc = iws_run();
 
 finish:

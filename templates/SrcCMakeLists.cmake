@@ -34,7 +34,7 @@ set(CMAKE_C_FLAGS_RELEASEWITHDEBINFO ${CMAKE_C_FLAGS_RELWITHDEBINFO})
 find_package(Threads REQUIRED CMAKE_THREAD_PREFER_PTHREAD)
 
 include({project_base_lib_cmake})
-set(LINK_LIBS {project_base_lib})
+set(LINK_LIBS {project_base_lib_static})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/include)
 add_definitions(-D_LARGEFILE_SOURCE)
