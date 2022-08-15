@@ -280,6 +280,9 @@ static int _main(int argc, char *argv[]) {
       case 'w':
         RCB(finish, g_env.project_website = iwpool_strdup2(g_env.pool, optarg));
         break;
+      case 'u':
+        RCB(finish, g_env.project_author = iwpool_strdup2(g_env.pool, optarg));
+        break;
       case 'U':
         g_env.project_flags |= PROJECT_FLG_NO_UNCRUSTIFY;
         break;
