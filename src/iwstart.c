@@ -39,8 +39,8 @@ static void _usage(const char *err) {
   fprintf(stderr, "\t  -l, --license=<>\tProject license name.\n");
   fprintf(stderr, "\t  -u, --author=<>\tProject author.\n");
   fprintf(stderr, "\t  -w, --website=<>\tProject website.\n");
-  fprintf(stderr, "\t      --no-uncrustify\tDisable uncrustify code form atter config\n");
-  fprintf(stderr, "\t      --no-lvimrc\tDisable .lvimrc vim file generation\n");
+  fprintf(stderr, "\t      --no-uncrustify\tDisable uncrustify code form atter config.\n");
+  fprintf(stderr, "\t      --no-lvimrc\tDisable .lvimrc vim file generation.\n");
   fprintf(stderr, "\t  -c, --conf=<>\t\t.ini configuration file.\n");
   fprintf(stderr, "\t  -V, --verbose\t\tPrint verbose output.\n");
   fprintf(stderr, "\t  -v, --version\t\tShow program version.\n");

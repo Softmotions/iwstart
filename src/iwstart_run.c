@@ -131,9 +131,13 @@ static iwrc _install(
   }
 
   if (fwrite(data, strlen(data), 1, file) != 1) {
-    fprintf(stderr, "Failed to write into: %s\n", path);
+    fprintf(stderr, "Write error: %s\n", path);
     rc = IW_ERROR_IO_ERRNO;
     goto finish;
+  }
+  
+  if (g_env.verbose) {
+    fprintf(stdout, "%s\n", iwxstr_ptr(xstr));
   }
 
 finish:
@@ -169,6 +173,10 @@ static iwrc _install_app_json(struct ctx *ctx) {
   RCC(rc, finish, jbl_set_string(jbl, "project_website", g_env.project_website));
 
   RCC(rc, finish, jbl_as_json(jbl, jbl_xstr_json_printer, xstr, JBL_PRINT_PRETTY));
+  
+  if (g_env.verbose) {
+    fprintf(stdout, "%s\n", iwxstr_ptr(xstr));
+  }
 
   rc = _install(ctx, (void*) iwxstr_ptr(xstr), iwxstr_size(xstr), ".app.json", false);
 
@@ -204,6 +212,7 @@ iwrc iws_run(void) {
 #define _INSTALL(name__, replace_data__) \
   RCC(rc, finish, _install(&ctx, name__, name__ ## _len, name__ ## _path, replace_data__))
 
+  RCC(rc, finish, _install_app_json(&ctx));
   _INSTALL(cmake_deb_changelog, false);
   _INSTALL(cmake_git_revision, false);
   _INSTALL(cmake_project_utils, false);
@@ -230,7 +239,6 @@ iwrc iws_run(void) {
   }
   _INSTALL(gitignore, false);
   _INSTALL(license, true);
-  RCC(rc, finish, _install_app_json(&ctx));
   _mkdir(&ctx, "build");
 
 
