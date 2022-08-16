@@ -41,6 +41,7 @@ static void _usage(const char *err) {
   fprintf(stderr, "\t  -w, --website=<>\tProject website.\n");
   fprintf(stderr, "\t      --no-uncrustify\tDisable uncrustify code form atter config.\n");
   fprintf(stderr, "\t      --no-lvimrc\tDisable .lvimrc vim file generation.\n");
+  fprintf(stderr, "\t  -f, --force\t\tKeep running if target directory is not empty.\n");
   fprintf(stderr, "\t  -c, --conf=<>\t\t.ini configuration file.\n");
   fprintf(stderr, "\t  -V, --verbose\t\tPrint verbose output.\n");
   fprintf(stderr, "\t  -v, --version\t\tShow program version.\n");
@@ -169,14 +170,16 @@ static bool _do_checks_dirs(void) {
     return false;
   }
 
-  rv = nftw(g_env.project_directory, _nfw_dir_yes, 10, FTW_DEPTH | FTW_MOUNT | FTW_PHYS);
-  if (rv == -1) {
-    iwlog_ecode_error3(iwrc_set_errno(IW_ERROR_IO_ERRNO, errno));
-    return false;
-  }
-  if (rv) {
-    fprintf(stderr, "Directory %s is not empty, aborting.\n", g_env.project_directory);
-    return false;
+  if (!(g_env.project_flags & PROJECT_FLG_FORCE)) {
+    rv = nftw(g_env.project_directory, _nfw_dir_yes, 10, FTW_DEPTH | FTW_MOUNT | FTW_PHYS);
+    if (rv == -1) {
+      iwlog_ecode_error3(iwrc_set_errno(IW_ERROR_IO_ERRNO, errno));
+      return false;
+    }
+    if (rv) {
+      fprintf(stderr, "Directory %s is not empty, aborting.\n", g_env.project_directory);
+      return false;
+    }
   }
   return true;
 }
@@ -237,12 +240,14 @@ static int _main(int argc, char *argv[]) {
     { "license",       1, 0, 'l' },
     { "author",        1, 0, 'u' },
     { "website",       1, 0, 'w' },
+    { "force",         0, 0, 'f' },
+
     { "no-uncrustify", 0, 0, 'U' },
     { "no-lvimrc",     0, 0, 'L' },
   };
 
   int ch;
-  while ((ch = getopt_long(argc, argv, "b:a:n:d:l:u:w:c:hvV", long_options, 0)) != -1) {
+  while ((ch = getopt_long(argc, argv, "b:a:n:d:l:u:w:c:hvVf", long_options, 0)) != -1) {
     switch (ch) {
       case 'h':
         _usage(0);
@@ -288,6 +293,9 @@ static int _main(int argc, char *argv[]) {
         break;
       case 'L':
         g_env.project_flags |= PROJECT_FLG_NO_LVIMRC;
+        break;
+      case 'f':
+        g_env.project_flags |= PROJECT_FLG_FORCE;
         break;
       default:
         _usage(0);

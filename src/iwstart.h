@@ -7,6 +7,7 @@
 #define PROJECT_FLG_EJDB2         0x04U
 #define PROJECT_FLG_NO_UNCRUSTIFY 0x08U
 #define PROJECT_FLG_NO_LVIMRC     0x10U
+#define PROJECT_FLG_FORCE         0x20U
 
 
 struct env {
