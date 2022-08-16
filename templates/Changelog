@@ -1,5 +1,5 @@
 {project_artifact} ({project_version}) UNRELEASED;
 
-  * {project_name}
+  * Initial version.
 
  -- {project_author}  {project_date}
