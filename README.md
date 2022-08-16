@@ -1,7 +1,6 @@
 # iwstart
 
-Generates initial C CMake projects based on iowow/iwnet/ejdb2 libraries.
-
+ Boilerplate generator for C projects based on iowow, iwnet, ejdb2 libraries.
 ## Usage 
 
 ```sh
