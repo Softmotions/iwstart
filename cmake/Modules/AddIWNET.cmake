@@ -1,3 +1,5 @@
+find_package(IWNET)
+
 if(TARGET IWNET::static)
   return()
 endif()

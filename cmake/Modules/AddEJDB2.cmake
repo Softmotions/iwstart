@@ -1,3 +1,5 @@
+find_package(EJDB2)
+
 if(TARGET EJDB2::static)
   return()
 endif()

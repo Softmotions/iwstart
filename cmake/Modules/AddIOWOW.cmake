@@ -1,3 +1,5 @@
+find_package(IOWOW)
+
 if(TARGET IOWOW::static) 
   return()
 endif()

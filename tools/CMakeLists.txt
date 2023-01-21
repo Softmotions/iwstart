@@ -85,6 +85,42 @@ add_custom_command(
     ${CMAKE_SOURCE_DIR}/cmake/Modules/AddEJDB2.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_ejdb2_add.inc")
 
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_iowow_find.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_iowow_find.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "cmake_iowow_find" -e
+    'static const char* cmake_iowow_find_path = \"cmake/Modules/FindIOWOW.cmake\"\;'
+    ${CMAKE_SOURCE_DIR}/cmake/Modules/FindIOWOW.cmake >
+    "${CMAKE_BINARY_DIR}/include/cmake_iowow_find.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_iwnet_find.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_iwnet_find.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "cmake_iwnet_find" -e
+    'static const char* cmake_iwnet_find_path = \"cmake/Modules/FindIWNET.cmake\"\;'
+    ${CMAKE_SOURCE_DIR}/cmake/Modules/FindIWNET.cmake >
+    "${CMAKE_BINARY_DIR}/include/cmake_iwnet_find.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_ejdb2_find.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_ejdb2_find.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "cmake_ejdb2_find" -e
+    'static const char* cmake_ejdb2_find_path = \"cmake/Modules/FindEJDB2.cmake\"\;'
+    ${CMAKE_SOURCE_DIR}/cmake/Modules/FindEJDB2.cmake >
+    "${CMAKE_BINARY_DIR}/include/cmake_ejdb2_find.inc")
+
 list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_deb_changelog.inc")
 add_custom_command(
   OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_deb_changelog.inc"
