@@ -64,8 +64,7 @@ add_library(IWNET::static STATIC IMPORTED GLOBAL)
 set_target_properties(
   IWNET::static
   PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
-             IMPORTED_LOCATION
-             "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiwnet-1.a"
+             IMPORTED_LOCATION ${BYPRODUCT}
              IMPORTED_LINK_INTERFACE_LIBRARIES "IOWOW::static")
 
 add_dependencies(IWNET::static extern_iwnet)

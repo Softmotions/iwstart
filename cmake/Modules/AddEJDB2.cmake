@@ -68,7 +68,7 @@ set_target_properties(
   EJDB2::static
   PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
              IMPORTED_LOCATION
-             "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libejdb2-2.a"
+             ${BYPRODUCT}
              IMPORTED_LINK_INTERFACE_LIBRARIES "IWNET::static")
 
 add_dependencies(EJDB2::static extern_ejdb2)
