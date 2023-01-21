@@ -21,8 +21,10 @@ set(CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS=OFF
     -DBUILD_EXAMPLES=OFF)
 
-set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH} ${CMAKE_INSTALL_PREFIX})
+set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH} ${CMAKE_INSTALL_PREFIX}
+                         ${CMAKE_BINARY_DIR})
 
+set(SSUB "|")
 foreach(
   extra
   ANDROID_ABI
@@ -39,7 +41,8 @@ foreach(
   PLATFORM
   TEST_TOOL_CMD)
   if(DEFINED ${extra})
-    list(APPEND CMAKE_ARGS "-D${extra}=${${extra}}")
+    string(REPLACE ";" "${SSUB}" extra_sub "${${extra}}")
+    list(APPEND CMAKE_ARGS "-D${extra}=${extra_sub}")
   endif()
 endforeach()
 
@@ -54,6 +57,7 @@ ExternalProject_Add(
   BUILD_IN_SOURCE OFF
   UPDATE_COMMAND ""
   CMAKE_ARGS ${CMAKE_ARGS}
+  LIST_SEPARATOR "${SSUB}"
   BUILD_BYPRODUCTS ${BYPRODUCT})
 
 add_library(IWNET::static STATIC IMPORTED GLOBAL)
