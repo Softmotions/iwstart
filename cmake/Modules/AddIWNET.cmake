@@ -4,6 +4,8 @@ if(TARGET IWNET::static)
   return()
 endif()
 
+set(IWNET_INCLUDE_DIRS "")
+
 include(ExternalProject)
 include(AddIOWOW)
 

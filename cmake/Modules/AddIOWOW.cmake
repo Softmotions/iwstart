@@ -4,6 +4,8 @@ if(TARGET IOWOW::static)
   return()
 endif()
 
+set(IOWOW_INCLUDE_DIRS "")
+
 include(ExternalProject)
 
 if(NOT DEFINED IOWOW_URL)

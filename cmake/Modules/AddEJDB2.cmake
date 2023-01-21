@@ -4,6 +4,8 @@ if(TARGET EJDB2::static)
   return()
 endif()
 
+set(EJDB2_INCLUDE_DIRS "")
+
 include(ExternalProject)
 include(AddIWNET)
 
