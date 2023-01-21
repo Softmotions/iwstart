@@ -1,3 +1,7 @@
+if(TARGET IOWOW::static) 
+  return()
+endif()
+
 include(ExternalProject)
 
 if(NOT DEFINED IOWOW_URL)
@@ -48,7 +52,7 @@ endforeach()
 message("IOWOW CMAKE_ARGS: ${CMAKE_ARGS}")
 
 ExternalProject_Add(
-  extern_iwnet
+  extern_iowow
   URL ${IOWOW_URL}
   DOWNLOAD_NAME iowow.zip
   TIMEOUT 360
@@ -68,4 +72,4 @@ set_target_properties(
              "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiowow-1.a"
              IMPORTED_LINK_INTERFACE_LIBRARIES "Threads::Threads;m")
 
-add_dependencies(IOWOW::static extern_iwnet)
+add_dependencies(IOWOW::static extern_iowow)

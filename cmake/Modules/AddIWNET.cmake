@@ -1,17 +1,20 @@
+if(TARGET IWNET::static)
+  return()
+endif()
+
 include(ExternalProject)
+include(AddIOWOW)
 
 if(NOT DEFINED IWNET_URL)
   set(IWNET_URL
       https://github.com/Softmotions/iwnet/archive/refs/heads/master.zip)
 endif()
 
-set(BYPRODUCT "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiwnet-1.a"
-              "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiowow-1.a")
+set(BYPRODUCT "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiwnet-1.a")
 
 set(CMAKE_ARGS
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR} 
-    -DBUILD_SHARED_LIBS=OFF
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS=OFF
     -DBUILD_EXAMPLES=OFF)
 
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH} ${CMAKE_INSTALL_PREFIX})
@@ -55,19 +58,11 @@ ExternalProject_Add(
   TIMEOUT 360
   PREFIX ${CMAKE_BINARY_DIR}
   BUILD_IN_SOURCE OFF
-  #DOWNLOAD_EXTRACT_TIMESTAMP ON
+  # DOWNLOAD_EXTRACT_TIMESTAMP ON
   UPDATE_COMMAND ""
   LIST_SEPARATOR "${SSUB}"
   CMAKE_ARGS ${CMAKE_ARGS}
   BUILD_BYPRODUCTS ${BYPRODUCT})
-
-add_library(IOWOW::static STATIC IMPORTED GLOBAL)
-set_target_properties(
-  IOWOW::static
-  PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
-             IMPORTED_LOCATION
-             "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiowow-1.a"
-             IMPORTED_LINK_INTERFACE_LIBRARIES "Threads::Threads;m")
 
 add_library(IWNET::static STATIC IMPORTED GLOBAL)
 set_target_properties(
@@ -77,5 +72,4 @@ set_target_properties(
              "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libiwnet-1.a"
              IMPORTED_LINK_INTERFACE_LIBRARIES "IOWOW::static")
 
-add_dependencies(IOWOW::static extern_iwnet)
 add_dependencies(IWNET::static extern_iwnet)
