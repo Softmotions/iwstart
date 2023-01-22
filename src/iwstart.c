@@ -34,7 +34,7 @@ static void _usage(const char *err) {
   fprintf(stderr, "\tNote: Options marked as * are required.\n\n");
   fprintf(stderr, "\t* -a, --artifact=<>\tProject main artifact name (required).\n");
   fprintf(stderr, "\t* -n, --name=<>\t\tShort project name.\n");
-  fprintf(stderr, "\t  -b, --base=<>\t\tProject base lib. Either of: iowow,iwnet,ejdb2,aws4. Default: iwnet\n");
+  fprintf(stderr, "\t  -b, --base=<>\t\tProject base lib. One of: iowow,iwnet,ejdb2,aws4. Default: iwnet\n");
   fprintf(stderr, "\t  -d, --description=<>\tProject description text.\n");
   fprintf(stderr, "\t  -l, --license=<>\tProject license name.\n");
   fprintf(stderr, "\t  -u, --author=<>\tProject author.\n");

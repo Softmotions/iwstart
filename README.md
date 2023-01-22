@@ -14,7 +14,7 @@ Usage iwstart [options] <project directory>
 
 	* -a, --artifact=<>	Project main artifact name (required).
 	* -n, --name=<>		Short project name.
-	  -b, --base=<>		Project base lib. Either of: iowow,iwnet,ejdb2. Default: iwnet
+	  -b, --base=<>		Project base lib. One of: iowow,iwnet,ejdb2,aws4. Default: iwnet
 	  -d, --description=<>	Project description text.
 	  -l, --license=<>	Project license name.
 	  -u, --author=<>	Project author.
