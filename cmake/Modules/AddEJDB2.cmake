@@ -26,6 +26,8 @@ set(CMAKE_ARGS
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH} ${CMAKE_INSTALL_PREFIX}
                          ${CMAKE_BINARY_DIR})
 
+list(REMOVE_DUPLICATES CMAKE_FIND_ROOT_PATH)
+
 set(SSUB "|")
 foreach(
   extra
@@ -67,8 +69,7 @@ add_library(EJDB2::static STATIC IMPORTED GLOBAL)
 set_target_properties(
   EJDB2::static
   PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
-             IMPORTED_LOCATION
-             ${BYPRODUCT}
+             IMPORTED_LOCATION ${BYPRODUCT}
              IMPORTED_LINK_INTERFACE_LIBRARIES "IWNET::static")
 
 add_dependencies(EJDB2::static extern_ejdb2)

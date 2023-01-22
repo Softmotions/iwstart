@@ -23,6 +23,8 @@ set(CMAKE_ARGS
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH} ${CMAKE_INSTALL_PREFIX}
                          ${CMAKE_BINARY_DIR})
 
+list(REMOVE_DUPLICATES CMAKE_FIND_ROOT_PATH)
+
 set(SSUB "|")
 foreach(
   extra

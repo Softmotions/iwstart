@@ -12,7 +12,6 @@ if(EJDB2_FOUND)
   set_target_properties(
     EJDB2::static
     PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
-               IMPORTED_LOCATION
-               "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/libejdb2-1.a"
+               IMPORTED_LOCATION ${EJDB2_STATIC_LIB}
                IMPORTED_LINK_INTERFACE_LIBRARIES "IWNET::static")
 endif()
