@@ -6,6 +6,9 @@
 #include "cmake_iwnet_find.inc"
 #include "cmake_ejdb2_add.inc"
 #include "cmake_ejdb2_find.inc"
+#include "cmake_aws4_add.inc"
+#include "cmake_aws4_find.inc"
+
 #include "cmake_deb_changelog.inc"
 #include "cmake_git_revision.inc"
 #include "cmake_project_utils.inc"
@@ -225,6 +228,8 @@ iwrc iws_run(void) {
   _INSTALL(cmake_iwnet_find, false);
   _INSTALL(cmake_ejdb2_add, false);
   _INSTALL(cmake_ejdb2_find, false);
+  _INSTALL(cmake_aws4_add, false);
+  _INSTALL(cmake_aws4_find, false);
   _INSTALL(cmake_lists, true);
   _INSTALL(src_cmake_lists, true);
   _INSTALL(app_c, true);

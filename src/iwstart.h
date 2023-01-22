@@ -5,9 +5,10 @@
 #define PROJECT_FLG_IOWOW         0x01U
 #define PROJECT_FLG_IWNET         0x02U
 #define PROJECT_FLG_EJDB2         0x04U
-#define PROJECT_FLG_NO_UNCRUSTIFY 0x08U
-#define PROJECT_FLG_NO_LVIMRC     0x10U
-#define PROJECT_FLG_FORCE         0x20U
+#define PROJECT_FLG_AWS4          0x08U
+#define PROJECT_FLG_NO_UNCRUSTIFY 0x10U
+#define PROJECT_FLG_NO_LVIMRC     0x20U
+#define PROJECT_FLG_FORCE         0x40U
 
 
 struct env {

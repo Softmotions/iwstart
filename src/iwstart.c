@@ -34,7 +34,7 @@ static void _usage(const char *err) {
   fprintf(stderr, "\tNote: Options marked as * are required.\n\n");
   fprintf(stderr, "\t* -a, --artifact=<>\tProject main artifact name (required).\n");
   fprintf(stderr, "\t* -n, --name=<>\t\tShort project name.\n");
-  fprintf(stderr, "\t  -b, --base=<>\t\tProject base lib. Either of: iowow,iwnet,ejdb2. Default: iwnet\n");
+  fprintf(stderr, "\t  -b, --base=<>\t\tProject base lib. Either of: iowow,iwnet,ejdb2,aws4. Default: iwnet\n");
   fprintf(stderr, "\t  -d, --description=<>\tProject description text.\n");
   fprintf(stderr, "\t  -l, --license=<>\tProject license name.\n");
   fprintf(stderr, "\t  -u, --author=<>\tProject author.\n");
@@ -84,6 +84,8 @@ static bool _project_base_lib_set(const char *val) {
     g_env.project_flags |= PROJECT_FLG_IWNET;
   } else if (!strcmp(val, "ejdb2")) {
     g_env.project_flags |= PROJECT_FLG_EJDB2;
+  } else if (!strcmp(val, "aws4")) {
+    g_env.project_flags |= PROJECT_FLG_AWS4;
   } else {
     goto fail;
   }
@@ -97,9 +99,11 @@ fail:
 
 static void _on_signal(int signo) {
   if (g_env.verbose) {
+    // NOLINTNEXTLINE
     fprintf(stderr, "\nExiting on signal: %d\n", signo);
   }
   // iwn_poller_shutdown_request(g_env.poller);
+  // NOLINTNEXTLINE
   exit(0);
 }
 
@@ -393,6 +397,9 @@ static int _main(int argc, char *argv[]) {
   } else if (g_env.project_flags & PROJECT_FLG_EJDB2) {
     g_env.project_base_lib_cmake = "AddEJDB2";
     g_env.project_base_lib_static = "EJDB2::static";
+  } else if (g_env.project_flags & PROJECT_FLG_AWS4) {
+    g_env.project_base_lib_cmake = "AddAWS4";
+    g_env.project_base_lib_static = "AWS4::static";
   } else {
     rc = IW_ERROR_ASSERTION;
     goto finish;

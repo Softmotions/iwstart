@@ -85,6 +85,18 @@ add_custom_command(
     ${CMAKE_SOURCE_DIR}/cmake/Modules/AddEJDB2.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_ejdb2_add.inc")
 
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_aws4_add.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_aws4_add.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "cmake_aws4_add" -e
+    'static const char* cmake_aws4_add_path = \"cmake/Modules/AddAWS4.cmake\"\;'
+    ${CMAKE_SOURCE_DIR}/cmake/Modules/AddAWS4.cmake >
+    "${CMAKE_BINARY_DIR}/include/cmake_aws4_add.inc")
+
 list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_iowow_find.inc")
 add_custom_command(
   OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_iowow_find.inc"
@@ -120,6 +132,18 @@ add_custom_command(
     'static const char* cmake_ejdb2_find_path = \"cmake/Modules/FindEJDB2.cmake\"\;'
     ${CMAKE_SOURCE_DIR}/cmake/Modules/FindEJDB2.cmake >
     "${CMAKE_BINARY_DIR}/include/cmake_ejdb2_find.inc")
+
+list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_aws4_find.inc")
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/include/cmake_aws4_find.inc"
+  DEPENDS hoststrliteral
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
+  COMMAND
+    $<TARGET_FILE:hoststrliteral> -i "cmake_aws4_find" -e
+    'static const char* cmake_aws4_find_path = \"cmake/Modules/FindAWS4.cmake\"\;'
+    ${CMAKE_SOURCE_DIR}/cmake/Modules/FindAWS4.cmake >
+    "${CMAKE_BINARY_DIR}/include/cmake_aws4_find.inc")
 
 list(APPEND _TARGETS "${CMAKE_BINARY_DIR}/include/cmake_deb_changelog.inc")
 add_custom_command(
