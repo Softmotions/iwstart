@@ -60,11 +60,17 @@ ExternalProject_Add(
   LIST_SEPARATOR "${SSUB}"
   BUILD_BYPRODUCTS ${BYPRODUCT})
 
+include(FindCURL)
+if(NOT CURL_FOUND)
+  message(FATAL_ERROR "Cannot find libcurl library")
+endif()
+
 add_library(AWS4::static STATIC IMPORTED GLOBAL)
 set_target_properties(
   AWS4::static
   PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
              IMPORTED_LOCATION ${BYPRODUCT}
-             IMPORTED_LINK_INTERFACE_LIBRARIES "IWNET::static")
+             IMPORTED_LINK_INTERFACE_LIBRARIES
+             "IWNET::static;${CURL_LIBRARIES}")
 
 add_dependencies(AWS4::static extern_aws4)
