@@ -1,3 +1,10 @@
+if(TARGET AWS4::static)
+  return()
+endif()
+
+include(AddIOWOW)
+include(AddIWNET)
+find_package(CURL REQUIRED)
 find_package(AWS4)
 
 if(TARGET AWS4::static)

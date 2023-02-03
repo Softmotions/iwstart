@@ -1,3 +1,9 @@
+if(TARGET EJDB2::static)
+  return()
+endif()
+
+include(AddIOWOW)
+include(AddIWNET)
 find_package(EJDB2)
 
 if(TARGET EJDB2::static)
@@ -7,8 +13,6 @@ endif()
 set(EJDB2_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/include)
 
 include(ExternalProject)
-include(AddIWNET)
-
 if(NOT DEFINED EJDB2_URL)
   set(EJDB2_URL
       https://github.com/Softmotions/ejdb/archive/refs/heads/master.zip)

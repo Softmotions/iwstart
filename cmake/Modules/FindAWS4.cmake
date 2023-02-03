@@ -8,7 +8,6 @@ find_package_handle_standard_args(AWS4 DEFAULT_MSG AWS4_INCLUDE_DIRS
                                   AWS4_STATIC_LIB)
 
 if(AWS4_FOUND)
-  include(FindCURL)
   if(NOT CURL_FOUND)
     message(FATAL_ERROR "Cannot find libcurl library")
   endif()
