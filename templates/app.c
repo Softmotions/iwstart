@@ -47,7 +47,6 @@ static void _on_signal(int signo) {
 
 static int _ini_handler(void *user_data, const char *section, const char *name, const char *value) {
   iwrc rc = 0;
-  struct init *init = user_data;
   iwlog_info("%s:%s=%s", section, name, value);
   if (!section || !strcmp(section, "main")) {
     if (!strcmp(name, "verbose")) {
