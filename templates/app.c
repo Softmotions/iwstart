@@ -1,4 +1,4 @@
-#include "{project_artifact}.h"
+#include "@project_artifact@.h"
 #include "config.h"
 
 #include <iowow/iwxstr.h>
@@ -28,7 +28,7 @@ static void _usage(const char *err) {
     fprintf(stderr, "\nError:\n\n");
     fprintf(stderr, "\t%s\n\n", err);
   }
-  fprintf(stderr, "\n\t{project_name}\n");
+  fprintf(stderr, "\n\t@project_name@\n");
   fprintf(stderr, "\nUsage %s [options]\n", g_env.program);
   fprintf(stderr, "\t-c, --conf=<>\t\t.ini configuration file\n");
   fprintf(stderr, "\t-V, --verbose\t\tPrint verbose output\n");

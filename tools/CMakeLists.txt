@@ -213,7 +213,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "app_c" -e
-    'static const char* app_c_path = \"src/{project_artifact}.c\"\;'
+    'static const char* app_c_path = \"src/@project_artifact@.c\"\;'
     ${CMAKE_SOURCE_DIR}/templates/app.c >
     "${CMAKE_BINARY_DIR}/include/app_c.inc")
 
@@ -225,7 +225,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "app_h" -e
-    'static const char* app_h_path = \"src/{project_artifact}.h\"\;'
+    'static const char* app_h_path = \"src/@project_artifact@.h\"\;'
     ${CMAKE_SOURCE_DIR}/templates/app.h >
     "${CMAKE_BINARY_DIR}/include/app_h.inc")
 
@@ -309,7 +309,7 @@ add_custom_command(
   COMMAND cmake -E make_directory ${CMAKE_BINARY_DIR}/include
   COMMAND
     $<TARGET_FILE:hoststrliteral> -i "app_run" -e
-    'static const char* app_run_path = \"src/{project_artifact}_run.c\"\;'
+    'static const char* app_run_path = \"src/@project_artifact@_run.c\"\;'
     ${CMAKE_SOURCE_DIR}/templates/app_run.c >
     "${CMAKE_BINARY_DIR}/include/app_run.inc")
 

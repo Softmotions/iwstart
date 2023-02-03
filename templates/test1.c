@@ -1,4 +1,4 @@
-#include "{project_artifact}.h"
+#include "@project_artifact@.h"
 
 #include <stdlib.h>
 

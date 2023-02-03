@@ -58,7 +58,7 @@ static const char* _replace_key(const char *key, void *d) {
     const char *pv;
     memcpy(&pv, (char*) &g_env + off, sizeof(const char*));
     return pv;
-  } else if (!strcmp("{home}", key)) {
+  } else if (!strcmp("@home@", key)) {
     return getenv("HOME");
   } else {
     return 0;
@@ -66,20 +66,20 @@ static const char* _replace_key(const char *key, void *d) {
 }
 
 static const char *_keys[] = {
-  "{home}",
-  "{cwd}",
-  "{project_artifact}",
-  "{project_name}",
-  "{project_description}",
-  "{project_license}",
-  "{project_directory}",
-  "{project_base_lib}",
-  "{project_base_lib_cmake}",
-  "{project_base_lib_static}",
-  "{project_version}",
-  "{project_author}",
-  "{project_date}",
-  "{project_website}"
+  "@home@",
+  "@cwd@",
+  "@project_artifact@",
+  "@project_name@",
+  "@project_description@",
+  "@project_license@",
+  "@project_directory@",
+  "@project_base_lib@",
+  "@project_base_lib_cmake@",
+  "@project_base_lib_static@",
+  "@project_version@",
+  "@project_author@",
+  "@project_date@",
+  "@project_website@"
 };
 
 static iwrc _replace(struct ctx *ctx, const char *data, size_t data_len, char **out) {
@@ -199,21 +199,21 @@ iwrc iws_run(void) {
   };
   RCB(finish, ctx.keys);
 
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{cwd}", (void*) offsetof(struct env, cwd)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_artifact}", (void*) offsetof(struct env, project_artifact)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_name}", (void*) offsetof(struct env, project_name)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_description}", (void*) offsetof(struct env, project_description)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_license}", (void*) offsetof(struct env, project_license)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_directory}", (void*) offsetof(struct env, project_directory)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_base_lib}", (void*) offsetof(struct env, project_base_lib)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@cwd@", (void*) offsetof(struct env, cwd)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_artifact@", (void*) offsetof(struct env, project_artifact)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_name@", (void*) offsetof(struct env, project_name)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_description@", (void*) offsetof(struct env, project_description)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_license@", (void*) offsetof(struct env, project_license)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_directory@", (void*) offsetof(struct env, project_directory)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_base_lib@", (void*) offsetof(struct env, project_base_lib)));
   RCC(rc, finish,
-      iwhmap_put(ctx.keys, "{project_base_lib_cmake}", (void*) offsetof(struct env, project_base_lib_cmake)));
+      iwhmap_put(ctx.keys, "@project_base_lib_cmake@", (void*) offsetof(struct env, project_base_lib_cmake)));
   RCC(rc, finish,
-      iwhmap_put(ctx.keys, "{project_base_lib_static}", (void*) offsetof(struct env, project_base_lib_static)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_version}", (void*) offsetof(struct env, project_version)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_author}", (void*) offsetof(struct env, project_author)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_date}", (void*) offsetof(struct env, project_date)));
-  RCC(rc, finish, iwhmap_put(ctx.keys, "{project_website}", (void*) offsetof(struct env, project_website)));
+      iwhmap_put(ctx.keys, "@project_base_lib_static@", (void*) offsetof(struct env, project_base_lib_static)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_version@", (void*) offsetof(struct env, project_version)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_author@", (void*) offsetof(struct env, project_author)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_date@", (void*) offsetof(struct env, project_date)));
+  RCC(rc, finish, iwhmap_put(ctx.keys, "@project_website@", (void*) offsetof(struct env, project_website)));
 
 #define _INSTALL(name__, replace_data__) \
   RCC(rc, finish, _install(&ctx, name__, name__ ## _len, name__ ## _path, replace_data__))

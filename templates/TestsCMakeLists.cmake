@@ -1,4 +1,4 @@
-link_libraries({project_artifact}_s)
+link_libraries(@project_artifact@_s)
 
 set(TEST_DATA_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set(TESTS test1)
