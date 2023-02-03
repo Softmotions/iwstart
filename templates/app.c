@@ -90,6 +90,8 @@ static iwrc _config_load(void) {
   rc = iwini_parse_string(iwxstr_ptr(xstr), _ini_handler, 0);
 
 finish:
+  free(data);
+  iwxstr_destroy(xstr);
   return rc;
 }
 
