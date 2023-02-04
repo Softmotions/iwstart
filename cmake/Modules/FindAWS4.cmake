@@ -8,10 +8,7 @@ find_package_handle_standard_args(AWS4 DEFAULT_MSG AWS4_INCLUDE_DIRS
                                   AWS4_STATIC_LIB)
 
 if(AWS4_FOUND)
-  if(NOT CURL_FOUND)
-    message(FATAL_ERROR "Cannot find libcurl library")
-  endif()
-
+  find_package(CURL REQUIRED)
   add_library(AWS4::static STATIC IMPORTED GLOBAL)
   set_target_properties(
     AWS4::static
