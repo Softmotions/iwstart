@@ -67,11 +67,6 @@ ExternalProject_Add(
   LIST_SEPARATOR "${SSUB}"
   BUILD_BYPRODUCTS ${BYPRODUCT})
 
-include(FindCURL)
-if(NOT CURL_FOUND)
-  message(FATAL_ERROR "Cannot find libcurl library")
-endif()
-
 add_library(AWS4::static STATIC IMPORTED GLOBAL)
 set_target_properties(
   AWS4::static
