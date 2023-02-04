@@ -78,6 +78,6 @@ set_target_properties(
   PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
              IMPORTED_LOCATION ${BYPRODUCT}
              IMPORTED_LINK_INTERFACE_LIBRARIES
-             "IWNET::static;${CURL_LIBRARIES}")
+             "IWNET::static;CURL::libcurl")
 
 add_dependencies(AWS4::static extern_aws4)

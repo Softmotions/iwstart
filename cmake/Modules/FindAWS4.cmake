@@ -18,5 +18,5 @@ if(AWS4_FOUND)
     PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
                IMPORTED_LOCATION ${AWS4_STATIC_LIB}
                IMPORTED_LINK_INTERFACE_LIBRARIES
-               "IWNET::static;${CURL_LIBRARIES}")
+               "IWNET::static;CURL::libcurl")
 endif()
