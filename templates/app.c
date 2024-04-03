@@ -141,7 +141,8 @@ static int _main(int argc, char *argv[]) {
     { "help",    0, 0, 'h' },
     { "verbose", 0, 0, 'V' },
     { "version", 0, 0, 'v' },
-    { "conf",    1, 0, 'c' }
+    { "conf",    1, 0, 'c' },
+    0
   };
 
   int ch;

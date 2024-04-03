@@ -7,7 +7,7 @@ endif()
 
 set(CMAKE_C_FLAGS
     "${CMAKE_C_FLAGS} \
-  -std=gnu11 \
+  -std=gnu2x \
   -fPIC \
   -Wall \
   -Wextra \

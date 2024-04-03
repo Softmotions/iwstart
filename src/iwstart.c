@@ -248,6 +248,7 @@ static int _main(int argc, char *argv[]) {
 
     { "no-uncrustify", 0, 0, 'U' },
     { "no-lvimrc",     0, 0, 'L' },
+    0
   };
 
   int ch;
