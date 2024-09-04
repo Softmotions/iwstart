@@ -141,7 +141,7 @@ static iwrc _install(
     rc = IW_ERROR_IO_ERRNO;
     goto finish;
   }
-  
+
   if (g_env.verbose) {
     fprintf(stdout, "%s\n", iwxstr_ptr(xstr));
   }
@@ -179,7 +179,7 @@ static iwrc _install_app_json(struct ctx *ctx) {
   RCC(rc, finish, jbl_set_string(jbl, "project_website", g_env.project_website));
 
   RCC(rc, finish, jbl_as_json(jbl, jbl_xstr_json_printer, xstr, JBL_PRINT_PRETTY));
-  
+
   if (g_env.verbose) {
     fprintf(stdout, "%s\n", iwxstr_ptr(xstr));
   }
@@ -216,7 +216,7 @@ iwrc iws_run(void) {
   RCC(rc, finish, iwhmap_put(ctx.keys, "@project_website@", (void*) offsetof(struct env, project_website)));
 
 #define _INSTALL(name__, replace_data__) \
-  RCC(rc, finish, _install(&ctx, name__, name__ ## _len, name__ ## _path, replace_data__))
+        RCC(rc, finish, _install(&ctx, name__, name__ ## _len, name__ ## _path, replace_data__))
 
   RCC(rc, finish, _install_app_json(&ctx));
   _INSTALL(cmake_deb_changelog, false);

@@ -232,22 +232,22 @@ static int _main(int argc, char *argv[]) {
   }
 
   static const struct option long_options[] = {
-    { "help",          0, 0, 'h' },
-    { "verbose",       0, 0, 'V' },
-    { "version",       0, 0, 'v' },
-    { "conf",          1, 0, 'c' },
+    { "help", 0, 0, 'h' },
+    { "verbose", 0, 0, 'V' },
+    { "version", 0, 0, 'v' },
+    { "conf", 1, 0, 'c' },
     //
-    { "artifact",      1, 0, 'a' },
-    { "name",          1, 0, 'n' },
-    { "base",          1, 0, 'b' },
-    { "description",   1, 0, 'd' },
-    { "license",       1, 0, 'l' },
-    { "author",        1, 0, 'u' },
-    { "website",       1, 0, 'w' },
-    { "force",         0, 0, 'f' },
+    { "artifact", 1, 0, 'a' },
+    { "name", 1, 0, 'n' },
+    { "base", 1, 0, 'b' },
+    { "description", 1, 0, 'd' },
+    { "license", 1, 0, 'l' },
+    { "author", 1, 0, 'u' },
+    { "website", 1, 0, 'w' },
+    { "force", 0, 0, 'f' },
 
     { "no-uncrustify", 0, 0, 'U' },
-    { "no-lvimrc",     0, 0, 'L' },
+    { "no-lvimrc", 0, 0, 'L' },
     0
   };
 
