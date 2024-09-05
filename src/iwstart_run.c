@@ -114,8 +114,7 @@ static iwrc _install(
   const unsigned char *data_,
   const unsigned int   data_len,
   const char          *path_,
-  bool                 replace_data
-  ) {
+  bool                 replace_data) {
   iwrc rc = 0;
   char *path = 0, *data = 0;
   FILE *file = 0;
