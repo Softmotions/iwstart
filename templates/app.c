@@ -191,14 +191,6 @@ static void _shutdown_hooks_run(void) {
   pthread_mutex_unlock(&_mtx);
 }
 
-static void _on_signal(int signo) {
-  if (g_env.verbose) {
-    fprintf(stderr, "\nExiting on signal: %d\n", signo);
-  }
-  // CHECK: iwn_poller_shutdown_request(g_env.poller);
-  exit(0);
-}
-
 static int _ini_handler(void *user_data, const char *section, const char *name, const char *value) {
   iwrc rc = 0;
   iwlog_info("%s:%s=%s", section, name, value);
