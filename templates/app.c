@@ -194,7 +194,7 @@ static void _shutdown_hooks_run(void) {
 static int _ini_handler(void *user_data, const char *section, const char *name, const char *value) {
   iwrc rc = 0;
   iwlog_info("%s:%s=%s", section, name, value);
-  if (!section || !strcmp(section, "main")) {
+  if (!section || *section == '\0' || !strcmp(section, "main")) {
     if (!strcmp(name, "verbose")) {
       IWINI_PARSE_BOOL(g_env.verbose);
     }
