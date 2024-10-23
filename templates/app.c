@@ -319,7 +319,6 @@ static void _on_term_signal(int signo) {
   if (g_env.verbose) {
     fprintf(stderr, "\nExiting on signal: %d\n", signo);
   }
-  _shutdown_hooks_run();
   // TODO: Call app termination staff like event loop exit, etc.
   // iwn_poller_shutdown_request(g_env.poller);
 }
