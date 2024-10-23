@@ -183,7 +183,7 @@ iwrc app_thread_run(void (*worker)(void*), void *user_data) {
 
 static void _shutdown_hooks_run(void) {
   pthread_mutex_lock(&_mtx);
-  for (int i = 0, l = iwulist_length(&_shutdown_hooks); i < l; ++i) {
+  for (int i = iwulist_length(&_shutdown_hooks) - 1; i >= 0; --i) {
     void (*hook)(void) = *(void(**)(void))iwulist_get(&_shutdown_hooks, i);
     hook();
   }
@@ -444,6 +444,25 @@ static int _main(int argc, char *argv[]) {
         goto finish;
     }
   }
+
+
+#ifdef NDEBUG
+  if (!g_env.config_file) {
+    char path[PATH_MAX + 1];
+    snprintf(path, sizeof(path), "%s/@project_artifact@.ini", g_env.cwd);
+    if (access(path, R_OK) == 0) {
+      RCB(finish, g_env.config_file = iwpool_strdup2(g_env.pool, path));
+    } else {
+      const char *home = getenv("HOME");
+      if (home) {
+        snprintf(path, sizeof(path), "%s/.@project_artifact@/@project_artifact@.ini", home);
+        if (access(path, R_OK) == 0) {
+          RCB(finish, g_env.config_file = iwpool_strdup2(g_env.pool, path));
+        }
+      }
+    }
+  }
+#endif
 
   if (g_env.config_file) {
     RCC(rc, finish, _config_load());
