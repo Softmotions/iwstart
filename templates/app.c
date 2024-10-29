@@ -295,7 +295,7 @@ IW_CONSTRUCTOR static void _init(void) {
   static bool init = false;
   if (__sync_bool_compare_and_swap(&init, false, true)) {
     umask(0077);
-    if (!iw_init()) {
+    if (iw_init()) {
       abort();
     }
     g_env.pool = iwpool_create_empty();
