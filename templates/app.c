@@ -295,6 +295,17 @@ IW_CONSTRUCTOR static void _init(void) {
   static bool init = false;
   if (__sync_bool_compare_and_swap(&init, false, true)) {
     umask(0077);
+    if (prctl(PR_SET_PDEATHSIG, SIGKILL) == -1) {
+      perror("Failed to set: prctl(PR_SET_PDEATHSIG, SIGKILL)");
+      abort();
+    }
+
+#ifndef NDEBUG
+    if (prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY) == -1) {
+      perror("Failed to se: prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY)");
+      abort();
+    }
+#endif
     if (iw_init()) {
       abort();
     }
@@ -353,18 +364,6 @@ static int _main(int argc, char *argv[]) {
   int rv = EXIT_SUCCESS;
   iwrc rc = 0;
   sigset_t ss;
-
-  if (prctl(PR_SET_PDEATHSIG, SIGKILL) == -1) {
-    perror("Failed to set: prctl(PR_SET_PDEATHSIG, SIGKILL)");
-    return -1;
-  }
-
-#ifndef NDEBUG
-  if (prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY) == -1) {
-    perror("Failed to se: prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY)");
-    return -1;
-  }
-#endif
 
   _init();
 
