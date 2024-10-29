@@ -397,7 +397,7 @@ static int _main(int argc, char *argv[]) {
   }
 
   {
-    char path[PATH_MAX + 1];
+    char path[PATH_MAX];
     RCC(rc, finish, iwp_exec_path(path, sizeof(path)));
     RCB(finish, g_env.program_file = iwpool_strdup2(g_env.pool, path));
     g_env.program = argc ? argv[0] : "";
@@ -446,7 +446,7 @@ static int _main(int argc, char *argv[]) {
 
 #ifdef NDEBUG
   if (!g_env.config_file) {
-    char path[PATH_MAX + 1];
+    char path[PATH_MAX];
     snprintf(path, sizeof(path), "%s/@project_artifact@.ini", g_env.cwd);
     if (access(path, R_OK) == 0) {
       RCB(finish, g_env.config_file = iwpool_strdup2(g_env.pool, path));
