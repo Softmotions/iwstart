@@ -444,12 +444,12 @@ static int _main(int argc, char *argv[]) {
   }
 
 
-#ifdef NDEBUG
   if (!g_env.config_file) {
     char path[PATH_MAX];
     snprintf(path, sizeof(path), "%s/@project_artifact@.ini", g_env.cwd);
     if (access(path, R_OK) == 0) {
       RCB(finish, g_env.config_file = iwpool_strdup2(g_env.pool, path));
+#ifdef NDEBUG
     } else {
       const char *home = getenv("HOME");
       if (home) {
@@ -458,9 +458,9 @@ static int _main(int argc, char *argv[]) {
           RCB(finish, g_env.config_file = iwpool_strdup2(g_env.pool, path));
         }
       }
+#endif
     }
   }
-#endif
 
   if (g_env.config_file) {
     RCC(rc, finish, _config_load());
